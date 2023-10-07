@@ -6,12 +6,13 @@ class PlayScene extends Phaser.Scene {
         super("PlayScene");
       }
 
-    preload() {
-this.load.image("sky", "assets/sky.png")
-    }
-
     create() {
-this.add.image(0,0,"sky").setOrigin(0)
+const map = this.make.tilemap({key: "crystal_Map"})
+const tileSet1 = map.addTilesetImage("main_lev_build_1", "main_lev_build_1")
+const tileSet2 = map.addTilesetImage("crystal_word_map", "main_lev_build_2")
+
+map.createStaticLayer("environment", tileSet1)
+map.createStaticLayer("platforms", tileSet1)
     }
 }
 

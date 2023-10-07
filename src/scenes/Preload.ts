@@ -7,11 +7,13 @@ class PreloadScene extends Phaser.Scene {
       }
 
     preload() {
-this.load.image("sky", "assets/sky.png")
+this.load.tilemapTiledJSON("crystal_Map", "assets/crystal_Map.json")
+this.load.image("main_lev_build_1", "assets/main_lev_build_1.png")
+this.load.image("main_lev_build_2", "assets/main_lev_build_2.png")
     }
 
     create() {
-this.add.image(0,0,"sky").setOrigin(0)
+this.scene.start("PlayScene")
     }
 }
 
