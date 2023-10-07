@@ -4,12 +4,10 @@ import PreloadScene from "./scenes/Preload";
 
 const width : number= 1280;
 const height: number = 600;
-const birdPosition = { x: width * 0.1, y: height / 2 };
 
 const sharedConfig = {
   width: width,
   height: height,
-  startPosition: birdPosition,
 };
 
 //Tienen que ir en orden de ejecución

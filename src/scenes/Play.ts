@@ -7,7 +7,7 @@ class PlayScene extends Phaser.Scene {
       }
 
     create() {
-const map = this.make.tilemap({key: "crystal_Map"})
+const map = this.make.tilemap({key: "crystal_map"})
 const tileSet1 = map.addTilesetImage("main_lev_build_1", "main_lev_build_1")
 const tileSet2 = map.addTilesetImage("crystal_word_map", "main_lev_build_2")
 
