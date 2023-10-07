@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import PlayScene from "./scenes/Play";
-
-
+import PreloadScene from "./scenes/Preload";
 
 const width : number= 1200;
 const height: number = 600;
@@ -14,7 +13,7 @@ const sharedConfig = {
 };
 
 //Tienen que ir en orden de ejecución
-const Scenes = [PlayScene];
+const Scenes = [PreloadScene, PlayScene];
 
 // Creamos una nueva escena con la configuracion compartida
 const createScene = (Scene:any) => new Scene(sharedConfig);
