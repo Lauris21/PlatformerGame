@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import PlayScene from "./scenes/Play";
 import PreloadScene from "./scenes/Preload";
 
-const width : number= 1200;
+const width : number= 1280;
 const height: number = 600;
 const birdPosition = { x: width * 0.1, y: height / 2 };
 
