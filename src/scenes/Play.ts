@@ -8,6 +8,8 @@ class PlayScene extends Phaser.Scene {
   create() {
     const map: Phaser.Tilemaps.Tilemap = this.createMaps();
     const layers = this.createLayers(map);
+
+    this.createPlayer()
   }
 
   createMaps() {
@@ -31,6 +33,13 @@ class PlayScene extends Phaser.Scene {
       environment,
       platforms,
     };
+  }
+
+  createPlayer() {
+    const player : Phaser.Physics.Arcade.Sprite = this.physics.add.sprite(100, 250, "player")
+    player.setGravityY(500)
+    player.setCollideWorldBounds(true)
+   // player.body.setGravityY(500)
   }
 }
 

@@ -34,7 +34,7 @@ const config = {
     //utiliza la física de arcade -> gestiona simulaciones físicas (gravedad, velocidad, etc)
     default: "arcade",
     arcade: {
-      // debug: true,  ayuda ver movimientos y a donde va el objeto
+      debug: true,   // ayuda ver movimientos y a donde va el objeto
     },
   },
   //La escena es lo que puede ver en la pantalla
