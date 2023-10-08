@@ -9,7 +9,9 @@ class PlayScene extends Phaser.Scene {
     const map: Phaser.Tilemaps.Tilemap = this.createMaps();
     const layers = this.createLayers(map);
 
-    this.createPlayer()
+    const player: Phaser.Physics.Arcade.Sprite = this.createPlayer()
+
+    this.physics.add.collider(player, layers.platforms)
   }
 
   createMaps() {
@@ -24,10 +26,13 @@ class PlayScene extends Phaser.Scene {
     const tileset: Phaser.Tilemaps.Tileset = map.getTileset("main_lev_build_1");
     const environment: Phaser.Tilemaps.StaticTilemapLayer =
       map.createStaticLayer("environment", tileset);
-    const platforms: Phaser.Tilemaps.DynamicTilemapLayer = map.createDynamicLayer(
+    const platforms: Phaser.Tilemaps.StaticTilemapLayer = map.createStaticLayer(
       "platforms",
       tileset
     );
+
+    // Le estamos diciendo que no colisione con los 0 del mosaico
+    platforms.setCollisionByExclusion([-1], true)
 
     return {
       environment,
@@ -39,7 +44,8 @@ class PlayScene extends Phaser.Scene {
     const player : Phaser.Physics.Arcade.Sprite = this.physics.add.sprite(100, 250, "player")
     player.setGravityY(500)
     player.setCollideWorldBounds(true)
-   // player.body.setGravityY(500)
+  
+    return player
   }
 }
 
