@@ -13,6 +13,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this)
 
         this.init()
+        this.initEvents()
     }
 
     init() {
@@ -24,7 +25,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true)
     }
 
-    preUpdate(time: number, delta: number):void {
+    initEvents() {
+        this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this)
+    }
+
+    update(time: number, delta: number):void {
         super.preUpdate(time, delta)
         const { left, right} = this.cursors
 
