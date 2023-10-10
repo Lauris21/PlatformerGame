@@ -1,5 +1,5 @@
 import PlayScene from "../scenes/Play"
-
+import initAnimation from "./playerAnims"
 export class Player extends Phaser.Physics.Arcade.Sprite {
 
     gravity: number
@@ -24,12 +24,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setGravityY(this.gravity)
         this.setCollideWorldBounds(true)
 
-        this.scene.anims.create({
-            key: "run",
-            frames: this.scene.anims.generateFrameNumbers("player", {start: 11, end: 16}),
-            frameRate: 8,
-            repeat: -1
-        })
+        initAnimation(this.scene.anims)
     }
 
     initEvents() {
