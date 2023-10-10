@@ -1,6 +1,11 @@
 import Phaser from "phaser";
 
 class PlayScene extends Phaser.Scene {
+    cursors : Phaser.Types.Input.Keyboard.CursorKeys 
+    player: Phaser.Physics.Arcade.Sprite
+
+    playerSpeed : number = 200
+
   constructor() {
     super("PlayScene");
   }
@@ -9,9 +14,11 @@ class PlayScene extends Phaser.Scene {
     const map: Phaser.Tilemaps.Tilemap = this.createMaps();
     const layers = this.createLayers(map);
 
-    const player: Phaser.Physics.Arcade.Sprite = this.createPlayer()
+   this.player = this.createPlayer()
 
-    this.physics.add.collider(player, layers.platformColliders)
+    this.physics.add.collider(this.player, layers.platformColliders)
+
+    this.cursors = this.input.keyboard.createCursorKeys()
   }
 
   createMaps() {
@@ -49,11 +56,24 @@ class PlayScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    const player : Phaser.Physics.Arcade.Sprite = this.physics.add.sprite(100, 250, "player")
-    player.setGravityY(500)
-    player.setCollideWorldBounds(true)
+    this.player = this.physics.add.sprite(100, 170, "player")
+    this.player.setGravityY(500)
+    this.player.setCollideWorldBounds(true)
   
-    return player
+    return this.player
+  }
+
+  update() {
+    const { left, right} = this.cursors
+
+    if (left.isDown) {
+        this.player.setVelocityX(-this.playerSpeed)
+
+    } else if ( right.isDown) {
+        this.player.setVelocityX(this.playerSpeed)
+    } else {
+        this.player.setVelocityX(0)
+    }
   }
 }
 
