@@ -1,8 +1,9 @@
 import Phaser from "phaser";
+import { Player } from "../entities/Player";
 
 class PlayScene extends Phaser.Scene {
     cursors : Phaser.Types.Input.Keyboard.CursorKeys 
-    player: Phaser.Physics.Arcade.Sprite
+    player: Player
 
     playerSpeed : number = 200
 
@@ -12,6 +13,7 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     const map: Phaser.Tilemaps.Tilemap = this.createMaps();
+
     const layers = this.createLayers(map);
 
    this.player = this.createPlayer()
@@ -56,6 +58,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   createPlayer() {
+    this.player = new Player(this, 100, 250)
     this.player = this.physics.add.sprite(100, 170, "player")
     this.player.setGravityY(500)
     this.player.setCollideWorldBounds(true)
