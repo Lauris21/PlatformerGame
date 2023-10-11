@@ -2,8 +2,12 @@ import PlayScene from "../scenes/Play";
 import initAnimation from "./playerAnims";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   scene: PlayScene;
+
   gravity: number;
   playerSpeed: number = 200;
+  jumpCount : number
+  consecutiveJump : number
+  
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor(scene: PlayScene, x: number, y: number) {
@@ -19,6 +23,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   init() {
     this.gravity = 500;
     this.playerSpeed = 200;
+    this.jumpCount = 0
+    this.consecutiveJump = 1
+
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.setGravityY(this.gravity);
@@ -36,6 +43,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     const onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor()
 
+    const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space)
+    const isUpJustDown = Phaser.Input.Keyboard.JustDown(up)
+
     if (left.isDown) {
       this.setVelocityX(-this.playerSpeed);
       this.setFlipX(true);
@@ -46,8 +56,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityX(0);
     }
 
-    if ((space.isDown || up.isDown) && onFloor) {
+    if ((isSpaceJustDown || isUpJustDown) && (onFloor || this.jumpCount < this.consecutiveJump)) {
       this.setVelocityY(-this.playerSpeed * 1.5);
+      this.jumpCount++
+    }
+
+    if(onFloor) {
+        this.jumpCount = 0
     }
 
     this.body.velocity.x !== 0
