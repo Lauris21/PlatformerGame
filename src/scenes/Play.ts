@@ -2,34 +2,35 @@ import Phaser from "phaser";
 import { Player } from "../entities/Player";
 import { CollidersType, SharedConfig } from "../types";
 class PlayScene extends Phaser.Scene {
-   
-    player: Player
-    config : SharedConfig
+  player: Player;
+  config: SharedConfig;
 
-    map: Phaser.Tilemaps.Tilemap
+  map: Phaser.Tilemaps.Tilemap;
 
-    platformColliders: Phaser.Tilemaps.StaticTilemapLayer
-    environment: Phaser.Tilemaps.StaticTilemapLayer
-    platforms: Phaser.Tilemaps.StaticTilemapLayer
-    playerZones : Phaser.Tilemaps.ObjectLayer
+  platformColliders: Phaser.Tilemaps.StaticTilemapLayer;
+  environment: Phaser.Tilemaps.StaticTilemapLayer;
+  platforms: Phaser.Tilemaps.StaticTilemapLayer;
+  playerZones: Phaser.Tilemaps.ObjectLayer;
 
-    objectsPlayerZones : Phaser.Types.Tilemaps.TiledObject[]
-    start: Phaser.Types.Tilemaps.TiledObject
-    end: Phaser.Types.Tilemaps.TiledObject
+  objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
+  start: Phaser.Types.Tilemaps.TiledObject;
+  end: Phaser.Types.Tilemaps.TiledObject;
 
-  constructor(config : SharedConfig) {
+  constructor(config: SharedConfig) {
     super("PlayScene");
-    this.config = config
+    this.config = config;
   }
 
   create() {
     this.createMaps();
-   this.createLayers();
-   this.getPlayerZones()
-   this.createPlayer()
-   this.createPlayerColliders(this.player, {platformColliders : this.platformColliders})
-   this.createEndOfLevel()
-   this.setupFollowupCameraOn(this.player)
+    this.createLayers();
+    this.getPlayerZones();
+    this.createPlayer();
+    this.createPlayerColliders(this.player, {
+      platformColliders: this.platformColliders,
+    });
+    this.createEndOfLevel();
+    this.setupFollowupCameraOn(this.player);
   }
 
   createMaps() {
@@ -40,50 +41,64 @@ class PlayScene extends Phaser.Scene {
   }
 
   createLayers() {
-    const tileset: Phaser.Tilemaps.Tileset = this.map.getTileset("main_lev_build_1");
+    const tileset: Phaser.Tilemaps.Tileset =
+      this.map.getTileset("main_lev_build_1");
 
     this.platformColliders = this.map.createStaticLayer(
-        "platforms_colliders",
-        tileset
-      ); 
-
-    this.environment =
-      this.map.createStaticLayer("environment", tileset);
-
-    this.platforms = this.map.createStaticLayer(
-      "platforms",
+      "platforms_colliders",
       tileset
-    ); 
+    );
 
-    this.playerZones = this.map.getObjectLayer("player_zones")
+    this.environment = this.map.createStaticLayer("environment", tileset);
+
+    this.platforms = this.map.createStaticLayer("platforms", tileset);
+
+    this.playerZones = this.map.getObjectLayer("player_zones");
 
     // Le estamos diciendo que no colisione con los 0 del mosaico
-    this.platformColliders.setCollisionByProperty({collides: true})
+    this.platformColliders.setCollisionByProperty({ collides: true });
   }
 
   createPlayer() {
-    this.player = new Player(this,this.start.x, this.start.y)
+    this.player = new Player(this, this.start.x, this.start.y);
   }
 
-  createPlayerColliders(player : Player,  colliders : CollidersType) {
-   player.addCollider(colliders.platformColliders, null)
+  createPlayerColliders(player: Player, colliders: CollidersType) {
+    player.addCollider(colliders.platformColliders, null);
   }
 
   createEndOfLevel() {
-    this.physics.add.sprite(this.end.x, this.end.y, "end").setAlpha(0).setSize(5, 200).setOrigin(0.5, 1)
+    const endOfLevel = this.physics.add
+      .sprite(this.end.x, this.end.y, "end")
+      .setAlpha(0)
+      .setSize(5, this.config.height)
+      .setOrigin(0.5, 1);
+
+    const endOfLevelOverlap = this.physics.add.overlap(
+      this.player,
+      endOfLevel,
+      () => {
+        endOfLevelOverlap.active = false;
+        console.log("entro");
+      }
+    );
   }
 
-  setupFollowupCameraOn(player : Player) {
-    const { height, width, mapOffset, zoomFactor} = this.config
-    this.physics.world.setBounds(0, 0, width + mapOffset, height + 200)
-    this.cameras.main.setBounds(0, 0, width + mapOffset, height).setZoom(zoomFactor)
-    this.cameras.main.startFollow(player)
+  setupFollowupCameraOn(player: Player) {
+    const { height, width, mapOffset, zoomFactor } = this.config;
+    this.physics.world.setBounds(0, 0, width + mapOffset, height + 200);
+    this.cameras.main
+      .setBounds(0, 0, width + mapOffset, height)
+      .setZoom(zoomFactor);
+    this.cameras.main.startFollow(player);
   }
 
   getPlayerZones() {
-    this.objectsPlayerZones = this.playerZones.objects
-    this.start = this.objectsPlayerZones.find(elem => elem.name === "startZone")
-    this.end = this.objectsPlayerZones.find(elem => elem.name === "endZone")
+    this.objectsPlayerZones = this.playerZones.objects;
+    this.start = this.objectsPlayerZones.find(
+      (elem) => elem.name === "startZone"
+    );
+    this.end = this.objectsPlayerZones.find((elem) => elem.name === "endZone");
   }
 }
 
