@@ -1,17 +1,19 @@
 import Phaser from "phaser";
 import PlayScene from "./scenes/Play";
 import PreloadScene from "./scenes/Preload";
+import { SharedConfig } from "./types";
 
 const mapWidth: number = 1600 
 
 const width : number= document.body.offsetWidth; // ancho navegador
 const height: number = 600;
 
-const sharedConfig = {
+const sharedConfig : SharedConfig = {
   // El desplazamiento de la camara será el ancho del juego menos el ancho del reproductor
   mapOffset: mapWidth > width ? mapWidth : 0,
   width: width,
   height: height,
+  zoomFactor: 1.2
 };
 
 //Tienen que ir en orden de ejecución
