@@ -5,6 +5,7 @@ class PlayScene extends Phaser.Scene {
    
     player: Player
     config : SharedConfig
+    map: Phaser.Tilemaps.Tilemap
 
   constructor(config : SharedConfig) {
     super("PlayScene");
@@ -12,13 +13,11 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    const map: Phaser.Tilemaps.Tilemap = this.createMaps();
+    this.createMaps();
 
-    const layers = this.createLayers(map);
+    const layers = this.createLayers(this.map);
 
    this.createPlayer()
-
-  //  this.player.addCollider(layers.platformColliders, null)
 
    this.createPlayerColliders(this.player, {platformColliders : layers.platformColliders})
 
@@ -26,11 +25,10 @@ class PlayScene extends Phaser.Scene {
   }
 
   createMaps() {
-    const map: Phaser.Tilemaps.Tilemap = this.make.tilemap({
+    this.map = this.make.tilemap({
       key: "crystal_map",
     });
-    map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
-    return map;
+    this.map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
   }
 
   createLayers(map: Phaser.Tilemaps.Tilemap) {
@@ -49,6 +47,8 @@ class PlayScene extends Phaser.Scene {
       tileset
     ); 
 
+    const playerZones : Phaser.Types.Tilemaps.TiledObject[] = map.getObjectLayer("player_zones").objects
+
     // Le estamos diciendo que no colisione con los 0 del mosaico
     platformColliders.setCollisionByProperty({collides: true})
 
@@ -56,6 +56,7 @@ class PlayScene extends Phaser.Scene {
       environment,
       platforms,
       platformColliders,
+      playerZones,
     };
   }
 
