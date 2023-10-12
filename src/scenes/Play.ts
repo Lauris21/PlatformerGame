@@ -71,6 +71,7 @@ class PlayScene extends Phaser.Scene {
 
   createEnemyColliders() {
     this.birdman.addCollider(this.platformColliders, null);
+    this.birdman.addCollider(this.player, null)
   }
 
   createPlayerColliders() {

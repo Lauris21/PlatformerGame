@@ -1,8 +1,12 @@
 import PlayScene from "../scenes/Play";
-import collidable from "../mixins/collidable"
+import collidable from "../mixins/collidable";
+import { Player } from "./Player";
 
 export class BirdMan extends Phaser.Physics.Arcade.Sprite {
-    addCollider: (otherGameobject: Phaser.Tilemaps.StaticTilemapLayer, callback: any) => void;
+  addCollider: (
+    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+    callback: any
+  ) => void;
   scene: PlayScene;
 
   gravity: number;
@@ -15,20 +19,20 @@ export class BirdMan extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     //Mixins
-    Object.assign(this, collidable)
+    Object.assign(this, collidable);
     // this.addCollider = collidable.addCollider.bind(this);
 
     this.init();
-
   }
 
   init() {
     this.gravity = 500;
     this.speed = 150;
-    this.setGravityY(this.gravity);
-    this.setCollideWorldBounds(true);
-    this.setOrigin(0.5, 1)
-    console.log(this.addCollider);
-    
+    this.setGravityY(this.gravity)
+      .setSize(20, 45)
+      .setOffset(9, 20)
+      .setCollideWorldBounds(true)
+      .setOrigin(0.5, 1)
+      .setImmovable(true);
   }
 }
