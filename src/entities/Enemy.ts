@@ -25,6 +25,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // this.addCollider = collidable.addCollider.bind(this);
 
     this.init();
+    this.initEvents()
   }
 
   init() {
@@ -38,5 +39,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       .setCollideWorldBounds(true)
       .setOrigin(0.5, 1)
       .setImmovable(true);
+  }
+
+  initEvents() {
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+  }
+
+  update(time: number, delta:number) {
+    this.setVelocityX(30)
   }
 }
