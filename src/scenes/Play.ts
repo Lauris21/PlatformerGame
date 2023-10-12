@@ -5,7 +5,17 @@ class PlayScene extends Phaser.Scene {
    
     player: Player
     config : SharedConfig
+
     map: Phaser.Tilemaps.Tilemap
+
+    platformColliders: Phaser.Tilemaps.StaticTilemapLayer
+    environment: Phaser.Tilemaps.StaticTilemapLayer
+    platforms: Phaser.Tilemaps.StaticTilemapLayer
+    playerZones : Phaser.Tilemaps.ObjectLayer
+
+    objectsPlayerZones : Phaser.Types.Tilemaps.TiledObject[]
+    start: Phaser.Types.Tilemaps.TiledObject
+    end: Phaser.Types.Tilemaps.TiledObject
 
   constructor(config : SharedConfig) {
     super("PlayScene");
@@ -14,13 +24,10 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     this.createMaps();
-
-    const layers = this.createLayers(this.map);
-
+   this.createLayers();
+   this.getPlayerZones()
    this.createPlayer()
-
-   this.createPlayerColliders(this.player, {platformColliders : layers.platformColliders})
-
+   this.createPlayerColliders(this.player, {platformColliders : this.platformColliders})
    this.setupFollowupCameraOn(this.player)
   }
 
@@ -31,41 +38,33 @@ class PlayScene extends Phaser.Scene {
     this.map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
   }
 
-  createLayers(map: Phaser.Tilemaps.Tilemap) {
-    const tileset: Phaser.Tilemaps.Tileset = map.getTileset("main_lev_build_1");
+  createLayers() {
+    const tileset: Phaser.Tilemaps.Tileset = this.map.getTileset("main_lev_build_1");
 
-    const platformColliders: Phaser.Tilemaps.StaticTilemapLayer = map.createStaticLayer(
+    this.platformColliders = this.map.createStaticLayer(
         "platforms_colliders",
         tileset
       ); 
 
-    const environment: Phaser.Tilemaps.StaticTilemapLayer =
-      map.createStaticLayer("environment", tileset);
+    this.environment =
+      this.map.createStaticLayer("environment", tileset);
 
-    const platforms: Phaser.Tilemaps.StaticTilemapLayer = map.createStaticLayer(
+    this.platforms = this.map.createStaticLayer(
       "platforms",
       tileset
     ); 
 
-    const playerZones : Phaser.Types.Tilemaps.TiledObject[] = map.getObjectLayer("player_zones").objects
+    this.playerZones = this.map.getObjectLayer("player_zones")
 
     // Le estamos diciendo que no colisione con los 0 del mosaico
-    platformColliders.setCollisionByProperty({collides: true})
-
-    return {
-      environment,
-      platforms,
-      platformColliders,
-      playerZones,
-    };
+    this.platformColliders.setCollisionByProperty({collides: true})
   }
 
   createPlayer() {
-    this.player = new Player(this,50, 250)
+    this.player = new Player(this,this.start.x, this.start.y)
   }
 
   createPlayerColliders(player : Player,  colliders : CollidersType) {
-
    player.addCollider(colliders.platformColliders, null)
   }
 
@@ -74,6 +73,12 @@ class PlayScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, width + mapOffset, height + 200)
     this.cameras.main.setBounds(0, 0, width + mapOffset, height).setZoom(zoomFactor)
     this.cameras.main.startFollow(player)
+  }
+
+  getPlayerZones() {
+    this.objectsPlayerZones = this.playerZones.objects
+    this.start = this.objectsPlayerZones.find(elem => elem.name === "startZone")
+    this.end = this.objectsPlayerZones.find(elem => elem.name === "endZone")
   }
 }
 
