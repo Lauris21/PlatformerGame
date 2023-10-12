@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player";
-import { EnemyTypes, SharedConfig } from "../types";
+import { SharedConfig } from "../types";
 import { Birdman } from "../entities/BirdMan";
-import { getEnemyTypes } from "../utils.js/getEnemyTypes";
+import { Enemies } from "../groups/Enemies";
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[]
+  enemies: Enemies
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -69,17 +70,17 @@ class PlayScene extends Phaser.Scene {
   }
 
   createEnemies() {
-    const enemyTypes : EnemyTypes = getEnemyTypes()
-    this.birdmanEnemies = this.enemySpawns.objects.map((enemy) => {
-       return new enemyTypes[enemy.type](this, enemy.x, enemy.y)
+    this.enemies = new Enemies(this)
+    const enemyTypes = this.enemies.getTypes()
+    this.enemySpawns.objects.forEach((item) => {
+       const enemy = new enemyTypes[item.type](this, item.x, item.y)
+       this.enemies.add(enemy)
     })
   }
 
   createEnemyColliders() {
-    this.birdmanEnemies.forEach((enemy) => {
-      enemy.addCollider(this.platformColliders, null)
-      enemy.addCollider(this.player, null)
-    })
+      this.enemies.addCollider(this.platformColliders, null)
+      this.enemies.addCollider(this.player, null)
   }
 
   createPlayerColliders() {
