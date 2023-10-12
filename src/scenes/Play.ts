@@ -1,8 +1,10 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player";
-import { CollidersType, SharedConfig } from "../types";
+import { SharedConfig } from "../types";
+import { BirdMan } from "../entities/BirdMan";
 class PlayScene extends Phaser.Scene {
   player: Player;
+  birdman: BirdMan 
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -26,9 +28,9 @@ class PlayScene extends Phaser.Scene {
     this.createLayers();
     this.getPlayerZones();
     this.createPlayer();
-    this.createPlayerColliders(this.player, {
-      platformColliders: this.platformColliders,
-    });
+    this.createEnemy()
+    this.createPlayerColliders();
+    this.createEnemyColliders()
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
   }
@@ -63,8 +65,16 @@ class PlayScene extends Phaser.Scene {
     this.player = new Player(this, this.start.x, this.start.y);
   }
 
-  createPlayerColliders(player: Player, colliders: CollidersType) {
-    player.addCollider(colliders.platformColliders, null);
+  createEnemy() {
+    this.birdman = new BirdMan(this, 200, 200);
+  }
+
+  createEnemyColliders() {
+    this.birdman.addCollider(this.platformColliders, null);
+  }
+
+  createPlayerColliders() {
+    this.player.addCollider(this.platformColliders, null);
   }
 
   createEndOfLevel() {
