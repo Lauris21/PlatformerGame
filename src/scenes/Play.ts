@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player";
-
+import { CollidersType } from "../types";
 class PlayScene extends Phaser.Scene {
    
     player: Player
@@ -18,7 +18,9 @@ class PlayScene extends Phaser.Scene {
 
    this.createPlayer()
 
-   this.player.addCollider(layers.platformColliders, null)
+  //  this.player.addCollider(layers.platformColliders, null)
+
+   this.createPlayerColliders(this.player, {platformColliders : layers.platformColliders})
   }
 
   createMaps() {
@@ -57,6 +59,11 @@ class PlayScene extends Phaser.Scene {
 
   createPlayer() {
     this.player = new Player(this, 100, 250)
+  }
+
+  createPlayerColliders(player : Player,  colliders : CollidersType) {
+
+   player.addCollider(colliders.platformColliders, null)
   }
 }
 
