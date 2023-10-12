@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player";
-import { SharedConfig } from "../types";
-import { BirdMan } from "../entities/BirdMan";
+import { EnemyTypes, SharedConfig } from "../types";
+import { Birdman } from "../entities/BirdMan";
+import { getEnemyTypes } from "../utils.js/getEnemyTypes";
 class PlayScene extends Phaser.Scene {
   player: Player;
-  birdmanEnemies: BirdMan[]
+  birdmanEnemies: Birdman[]
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -68,8 +69,9 @@ class PlayScene extends Phaser.Scene {
   }
 
   createEnemies() {
+    const enemyTypes : EnemyTypes = getEnemyTypes()
     this.birdmanEnemies = this.enemySpawns.objects.map((enemy) => {
-      return new BirdMan(this, enemy.x, enemy.y)
+       return new enemyTypes[enemy.type](this, enemy.x, enemy.y)
     })
   }
 
