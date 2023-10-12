@@ -4,15 +4,15 @@ import { SharedConfig } from "../types";
 import { BirdMan } from "../entities/BirdMan";
 class PlayScene extends Phaser.Scene {
   player: Player;
-  birdman: BirdMan 
+  birdmanEnemies: BirdMan[]
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
-
   platformColliders: Phaser.Tilemaps.StaticTilemapLayer;
   environment: Phaser.Tilemaps.StaticTilemapLayer;
   platforms: Phaser.Tilemaps.StaticTilemapLayer;
   playerZones: Phaser.Tilemaps.ObjectLayer;
+  enemySpawns: Phaser.Tilemaps.ObjectLayer
 
   objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
   start: Phaser.Types.Tilemaps.TiledObject;
@@ -28,7 +28,7 @@ class PlayScene extends Phaser.Scene {
     this.createLayers();
     this.getPlayerZones();
     this.createPlayer();
-    this.createEnemy()
+    this.createEnemies()
     this.createPlayerColliders();
     this.createEnemyColliders()
     this.createEndOfLevel();
@@ -57,6 +57,8 @@ class PlayScene extends Phaser.Scene {
 
     this.playerZones = this.map.getObjectLayer("player_zones");
 
+    this.enemySpawns = this.map.getObjectLayer("enemy_spawns");
+
     // Le estamos diciendo que no colisione con los 0 del mosaico
     this.platformColliders.setCollisionByProperty({ collides: true });
   }
@@ -65,13 +67,17 @@ class PlayScene extends Phaser.Scene {
     this.player = new Player(this, this.start.x, this.start.y);
   }
 
-  createEnemy() {
-    this.birdman = new BirdMan(this, 200, 200);
+  createEnemies() {
+    this.birdmanEnemies = this.enemySpawns.objects.map((enemy) => {
+      return new BirdMan(this, enemy.x, enemy.y)
+    })
   }
 
   createEnemyColliders() {
-    this.birdman.addCollider(this.platformColliders, null);
-    this.birdman.addCollider(this.player, null)
+    this.birdmanEnemies.forEach((enemy) => {
+      enemy.addCollider(this.platformColliders, null)
+      enemy.addCollider(this.player, null)
+    })
   }
 
   createPlayerColliders() {
