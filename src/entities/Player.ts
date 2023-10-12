@@ -1,6 +1,8 @@
 import PlayScene from "../scenes/Play";
 import initAnimation from "./playerAnims";
+import collidable from "../mixins/collidable"
 export class Player extends Phaser.Physics.Arcade.Sprite {
+    addCollider: (otherGameobject: Phaser.Tilemaps.StaticTilemapLayer, callback: any) => void;
   scene: PlayScene;
 
   gravity: number;
@@ -16,11 +18,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    //Mixins
+    Object.assign(this, collidable)
+    // this.addCollider = collidable.addCollider.bind(this);
+
     this.init();
     this.initEvents();
   }
 
   init() {
+    console.log(this.addCollider);
+    
+    
     this.gravity = 500;
     this.playerSpeed = 150;
     this.jumpCount = 0
