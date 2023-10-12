@@ -28,6 +28,7 @@ class PlayScene extends Phaser.Scene {
    this.getPlayerZones()
    this.createPlayer()
    this.createPlayerColliders(this.player, {platformColliders : this.platformColliders})
+   this.createEndOfLevel()
    this.setupFollowupCameraOn(this.player)
   }
 
@@ -66,6 +67,10 @@ class PlayScene extends Phaser.Scene {
 
   createPlayerColliders(player : Player,  colliders : CollidersType) {
    player.addCollider(colliders.platformColliders, null)
+  }
+
+  createEndOfLevel() {
+    this.physics.add.sprite(this.end.x, this.end.y, "end").setAlpha(0).setSize(5, 200).setOrigin(0.5, 1)
   }
 
   setupFollowupCameraOn(player : Player) {
