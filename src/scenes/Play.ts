@@ -20,6 +20,9 @@ class PlayScene extends Phaser.Scene {
   start: Phaser.Types.Tilemaps.TiledObject;
   end: Phaser.Types.Tilemaps.TiledObject;
 
+  graphics: Phaser.GameObjects.Graphics
+  line: Phaser.Geom.Line
+
   constructor(config: SharedConfig) {
     super("PlayScene");
     this.config = config;
@@ -35,6 +38,26 @@ class PlayScene extends Phaser.Scene {
     this.createEnemyColliders()
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
+
+    this.graphics = this.add.graphics()
+    this.line = new Phaser.Geom.Line()
+    this.graphics.lineStyle(1, 0x00ff00)
+
+    this.input.on("pointerdown", this.startDrawing, this)
+    this.input.on("pointerup", this.finishDrawing, this)
+
+  }
+
+  startDrawing(pointer : Phaser.Input.Pointer) {
+    this.line.x1 = pointer.worldX
+    this.line.y1 = pointer.worldY
+  }
+
+  finishDrawing(pointer : Phaser.Input.Pointer){
+    this.line.x2 = pointer.worldX
+    this.line.y2 = pointer.worldY
+    
+    this.graphics.strokeLineShape(this.line)
   }
 
   createMaps() {
