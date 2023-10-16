@@ -26,6 +26,7 @@ class PlayScene extends Phaser.Scene {
 
   plotting: boolean; // Saber si estamos pulsando el raton
   tileHits: Phaser.Tilemaps.Tile[] // Si el raycasting golpea contra las plataformas del mosaico
+  collidingTileColor: Phaser.Display.Color
 
   constructor(config: SharedConfig) {
     super("PlayScene");
@@ -53,27 +54,41 @@ class PlayScene extends Phaser.Scene {
     this.input.on("pointerup", () => this.finishDrawing(this.pointer, this.platforms), this);
   }
 
+  drawDebbug(layer: Phaser.Tilemaps.StaticTilemapLayer) { // Pintamos los mosaicos de la capa golpeada
+this.collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200)
+
+layer.renderDebug(this.graphics, {
+  tileColor: null,
+  collidingTileColor: this.collidingTileColor,
+})
+  }
+
   startDrawing(pointer: Phaser.Input.Pointer) {
+    if(this.tileHits?.length > 0) {
+      this.tileHits.forEach((tile) => {
+       tile.index !== -1 && tile.setCollision(false)
+      })
+    }
     this.line.x1 = pointer.worldX;
     this.line.y1 = pointer.worldY;
     this.plotting = true;
   }
 
-  finishDrawing(pointer: Phaser.Input.Pointer, platforms: Phaser.Tilemaps.StaticTilemapLayer) {
+  finishDrawing(pointer: Phaser.Input.Pointer, layer: Phaser.Tilemaps.StaticTilemapLayer) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
     this.graphics.clear()
     this.graphics.strokeLineShape(this.line);
   
-    this.tileHits = platforms.getTilesWithinShape(this.line)
+    this.tileHits = layer.getTilesWithinShape(this.line)
     
     if(this.tileHits.length > 0) {
       this.tileHits.forEach((tile) => {
-       tile.index !== -1 && console.log("I have hit the platform");
+       tile.index !== -1 && tile.setCollision(true)
       })
     }
-    
+    this.drawDebbug(layer)
     this.plotting = false;
   }
 
