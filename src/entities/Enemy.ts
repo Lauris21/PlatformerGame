@@ -13,6 +13,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   gravity: number;
   speed: number;
   health: number
+  rayGraphics: Phaser.GameObjects.Graphics
+
+  ray: Phaser.Geom.Line
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -32,6 +35,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.gravity = 500;
     this.speed = 150;
     this.health = 100
+    this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}})
 
     this.setGravityY(this.gravity)
       .setSize(20, 45)
@@ -47,5 +51,18 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   update(time: number, delta:number) {
     this.setVelocityX(30)
+   this.raycast(this.body)
+
+   this.rayGraphics.clear()
+   this.rayGraphics.strokeLineShape(this.ray)
+  }
+  raycast(body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody, raylength: number = 30) {
+    const {x, y, width, halfHeight} = body
+    this.ray = new Phaser.Geom.Line()
+
+    this.ray.x1 = x + width
+    this.ray.y1 = y + halfHeight
+    this.ray.x2 = this.ray.x1 + raylength
+    this.ray.y2 = this.ray.y1 + raylength
   }
 }

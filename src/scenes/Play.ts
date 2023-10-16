@@ -22,11 +22,11 @@ class PlayScene extends Phaser.Scene {
 
   graphics: Phaser.GameObjects.Graphics;
   line: Phaser.Geom.Line;
-  pointer: Phaser.Input.Pointer;
+  // pointer: Phaser.Input.Pointer;
 
-  plotting: boolean; // Saber si estamos pulsando el raton
+  // plotting: boolean; // Saber si estamos pulsando el raton
   tileHits: Phaser.Tilemaps.Tile[] // Si el raycasting golpea contra las plataformas del mosaico
-  collidingTileColor: Phaser.Display.Color
+  // collidingTileColor: Phaser.Display.Color
 
   constructor(config: SharedConfig) {
     super("PlayScene");
@@ -44,35 +44,35 @@ class PlayScene extends Phaser.Scene {
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
 
-    this.plotting = false;
+    // this.plotting = false;
 
-    this.graphics = this.add.graphics();
-    this.line = new Phaser.Geom.Line();
-    this.graphics.lineStyle(1, 0x00ff00);
+    // this.graphics = this.add.graphics();
+    // this.line = new Phaser.Geom.Line();
+    // this.graphics.lineStyle(1, 0x00ff00);
 
-    this.input.on("pointerdown", this.startDrawing, this);
-    this.input.on("pointerup", () => this.finishDrawing(this.pointer, this.platforms), this);
+   // this.input.on("pointerdown", this.startDrawing, this);
+   // this.input.on("pointerup", () => this.finishDrawing(this.pointer, this.platforms), this);
   }
 
-  drawDebbug(layer: Phaser.Tilemaps.StaticTilemapLayer) { // Pintamos los mosaicos de la capa golpeada
-this.collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200)
+//   drawDebbug(layer: Phaser.Tilemaps.StaticTilemapLayer) { // Pintamos los mosaicos de la capa golpeada
+// this.collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200)
 
-layer.renderDebug(this.graphics, {
-  tileColor: null,
-  collidingTileColor: this.collidingTileColor,
-})
-  }
+// layer.renderDebug(this.graphics, {
+//   tileColor: null,
+//   collidingTileColor: this.collidingTileColor,
+// })
+//   }
 
-  startDrawing(pointer: Phaser.Input.Pointer) {
-    if(this.tileHits?.length > 0) {
-      this.tileHits.forEach((tile) => {
-       tile.index !== -1 && tile.setCollision(false)
-      })
-    }
-    this.line.x1 = pointer.worldX;
-    this.line.y1 = pointer.worldY;
-    this.plotting = true;
-  }
+//   startDrawing(pointer: Phaser.Input.Pointer) {
+//     if(this.tileHits?.length > 0) {
+//       this.tileHits.forEach((tile) => {
+//        tile.index !== -1 && tile.setCollision(false)
+//       })
+//     }
+//     this.line.x1 = pointer.worldX;
+//     this.line.y1 = pointer.worldY;
+//     this.plotting = true;
+//   }
 
   finishDrawing(pointer: Phaser.Input.Pointer, layer: Phaser.Tilemaps.StaticTilemapLayer) {
     this.line.x2 = pointer.worldX;
@@ -88,8 +88,8 @@ layer.renderDebug(this.graphics, {
        tile.index !== -1 && tile.setCollision(true)
       })
     }
-    this.drawDebbug(layer)
-    this.plotting = false;
+    // this.drawDebbug(layer)
+    // this.plotting = false;
   }
 
   createMaps() {
@@ -175,17 +175,17 @@ layer.renderDebug(this.graphics, {
     );
     this.end = this.objectsPlayerZones.find((elem) => elem.name === "endZone");
   }
-  update(time: number, delta: number): void {
-    if (this.plotting) {
-      this.pointer = this.input.activePointer;
-      this.line.x2 = this.pointer.worldX;
-      this.line.y2 = this.pointer.worldY;
+  // update(time: number, delta: number): void {
+  //   if (this.plotting) {
+  //     this.pointer = this.input.activePointer;
+  //     this.line.x2 = this.pointer.worldX;
+  //     this.line.y2 = this.pointer.worldY;
 
-      this.graphics.clear() // Limpiamos los rayos para quedarnos con uno
+  //     this.graphics.clear() // Limpiamos los rayos para quedarnos con uno
 
-      this.graphics.strokeLineShape(this.line);
-    }
-  }
+  //     this.graphics.strokeLineShape(this.line);
+  //   }
+  // }
 }
 
 export default PlayScene;
