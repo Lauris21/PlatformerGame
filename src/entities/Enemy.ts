@@ -17,6 +17,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   ray: Phaser.Geom.Line
   platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer
+  hits: Phaser.Tilemaps.Tile[]
+  hasHit: boolean // Saber si raycasting esta golpeando la plataforma
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -52,7 +54,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   update(time: number, delta:number) {
     this.setVelocityX(30)
-   this.raycast(this.body)
+   this.raycast()
 
    this.rayGraphics.clear()
    this.rayGraphics.strokeLineShape(this.ray)
@@ -62,13 +64,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 this.platformCollidersLayer = layer
   }
 
-  raycast(body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody, raylength: number = 30) {
-    const {x, y, width, halfHeight} = body
+  raycast(raylength: number = 30) {
+    const {x, y, width, halfHeight} = this.body
     this.ray = new Phaser.Geom.Line()
+    this.hasHit = false
 
     this.ray.x1 = x + width
     this.ray.y1 = y + halfHeight
     this.ray.x2 = this.ray.x1 + raylength
     this.ray.y2 = this.ray.y1 + raylength
+
+    this.hits = this.platformCollidersLayer.getTilesWithinShape(this.ray)
+
+    if(this.hits.length > 0) {
+      this.hasHit = this.hits.some((hit) => hit.index !== -1)
+    }
   }
 }
