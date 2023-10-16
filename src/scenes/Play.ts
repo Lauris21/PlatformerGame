@@ -5,8 +5,8 @@ import { Birdman } from "../entities/BirdMan";
 import { Enemies } from "../groups/Enemies";
 class PlayScene extends Phaser.Scene {
   player: Player;
-  birdmanEnemies: Birdman[]
-  enemies: Enemies
+  birdmanEnemies: Birdman[];
+  enemies: Enemies;
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -14,14 +14,17 @@ class PlayScene extends Phaser.Scene {
   environment: Phaser.Tilemaps.StaticTilemapLayer;
   platforms: Phaser.Tilemaps.StaticTilemapLayer;
   playerZones: Phaser.Tilemaps.ObjectLayer;
-  enemySpawns: Phaser.Tilemaps.ObjectLayer
+  enemySpawns: Phaser.Tilemaps.ObjectLayer;
 
   objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
   start: Phaser.Types.Tilemaps.TiledObject;
   end: Phaser.Types.Tilemaps.TiledObject;
 
-  graphics: Phaser.GameObjects.Graphics
-  line: Phaser.Geom.Line
+  graphics: Phaser.GameObjects.Graphics;
+  line: Phaser.Geom.Line;
+  pointer: Phaser.Input.Pointer;
+
+  plotting: boolean; // Saber si estamos pulsando el raton
 
   constructor(config: SharedConfig) {
     super("PlayScene");
@@ -33,31 +36,35 @@ class PlayScene extends Phaser.Scene {
     this.createLayers();
     this.getPlayerZones();
     this.createPlayer();
-    this.createEnemies()
+    this.createEnemies();
     this.createPlayerColliders();
-    this.createEnemyColliders()
+    this.createEnemyColliders();
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
 
-    this.graphics = this.add.graphics()
-    this.line = new Phaser.Geom.Line()
-    this.graphics.lineStyle(1, 0x00ff00)
+    this.plotting = false;
 
-    this.input.on("pointerdown", this.startDrawing, this)
-    this.input.on("pointerup", this.finishDrawing, this)
+    this.graphics = this.add.graphics();
+    this.line = new Phaser.Geom.Line();
+    this.graphics.lineStyle(1, 0x00ff00);
 
+    this.input.on("pointerdown", this.startDrawing, this);
+    this.input.on("pointerup", this.finishDrawing, this);
   }
 
-  startDrawing(pointer : Phaser.Input.Pointer) {
-    this.line.x1 = pointer.worldX
-    this.line.y1 = pointer.worldY
+  startDrawing(pointer: Phaser.Input.Pointer) {
+    this.line.x1 = pointer.worldX;
+    this.line.y1 = pointer.worldY;
+    this.plotting = true;
   }
 
-  finishDrawing(pointer : Phaser.Input.Pointer){
-    this.line.x2 = pointer.worldX
-    this.line.y2 = pointer.worldY
-    
-    this.graphics.strokeLineShape(this.line)
+  finishDrawing(pointer: Phaser.Input.Pointer) {
+    this.line.x2 = pointer.worldX;
+    this.line.y2 = pointer.worldY;
+
+    this.graphics.clear()
+    this.graphics.strokeLineShape(this.line);
+    this.plotting = false;
   }
 
   createMaps() {
@@ -93,17 +100,17 @@ class PlayScene extends Phaser.Scene {
   }
 
   createEnemies() {
-    this.enemies = new Enemies(this)
-    const enemyTypes = this.enemies.getTypes()
+    this.enemies = new Enemies(this);
+    const enemyTypes = this.enemies.getTypes();
     this.enemySpawns.objects.forEach((item) => {
-       const enemy = new enemyTypes[item.type](this, item.x, item.y)
-       this.enemies.add(enemy)
-    })
+      const enemy = new enemyTypes[item.type](this, item.x, item.y);
+      this.enemies.add(enemy);
+    });
   }
 
   createEnemyColliders() {
-      this.enemies.addCollider(this.platformColliders, null)
-      this.enemies.addCollider(this.player, null)
+    this.enemies.addCollider(this.platformColliders, null);
+    this.enemies.addCollider(this.player, null);
   }
 
   createPlayerColliders() {
@@ -142,6 +149,17 @@ class PlayScene extends Phaser.Scene {
       (elem) => elem.name === "startZone"
     );
     this.end = this.objectsPlayerZones.find((elem) => elem.name === "endZone");
+  }
+  update(time: number, delta: number): void {
+    if (this.plotting) {
+      this.pointer = this.input.activePointer;
+      this.line.x2 = this.pointer.worldX;
+      this.line.y2 = this.pointer.worldY;
+
+      this.graphics.clear() // Limpiamos los rayos para quedarnos con uno
+
+      this.graphics.strokeLineShape(this.line);
+    }
   }
 }
 
