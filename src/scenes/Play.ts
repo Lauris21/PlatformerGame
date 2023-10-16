@@ -127,8 +127,10 @@ class PlayScene extends Phaser.Scene {
   createEnemies() {
     this.enemies = new Enemies(this);
     const enemyTypes = this.enemies.getTypes();
+
     this.enemySpawns.objects.forEach((item) => {
       const enemy = new enemyTypes[item.type](this, item.x, item.y);
+      enemy.setPlatformColliders(this.platformColliders)
       this.enemies.add(enemy);
     });
   }

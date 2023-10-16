@@ -16,6 +16,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   rayGraphics: Phaser.GameObjects.Graphics
 
   ray: Phaser.Geom.Line
+  platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -56,6 +57,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
    this.rayGraphics.clear()
    this.rayGraphics.strokeLineShape(this.ray)
   }
+
+  setPlatformColliders(layer: Phaser.Tilemaps.StaticTilemapLayer) {
+this.platformCollidersLayer = layer
+  }
+
   raycast(body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody, raylength: number = 30) {
     const {x, y, width, halfHeight} = body
     this.ray = new Phaser.Geom.Line()
