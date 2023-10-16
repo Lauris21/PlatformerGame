@@ -25,6 +25,7 @@ class PlayScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
 
   plotting: boolean; // Saber si estamos pulsando el raton
+  tileHits: Phaser.Tilemaps.Tile[] // Si el raycasting golpea contra las plataformas del mosaico
 
   constructor(config: SharedConfig) {
     super("PlayScene");
@@ -49,7 +50,7 @@ class PlayScene extends Phaser.Scene {
     this.graphics.lineStyle(1, 0x00ff00);
 
     this.input.on("pointerdown", this.startDrawing, this);
-    this.input.on("pointerup", this.finishDrawing, this);
+    this.input.on("pointerup", () => this.finishDrawing(this.pointer, this.platforms), this);
   }
 
   startDrawing(pointer: Phaser.Input.Pointer) {
@@ -58,12 +59,21 @@ class PlayScene extends Phaser.Scene {
     this.plotting = true;
   }
 
-  finishDrawing(pointer: Phaser.Input.Pointer) {
+  finishDrawing(pointer: Phaser.Input.Pointer, platforms: Phaser.Tilemaps.StaticTilemapLayer) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
     this.graphics.clear()
     this.graphics.strokeLineShape(this.line);
+  
+    this.tileHits = platforms.getTilesWithinShape(this.line)
+    
+    if(this.tileHits.length > 0) {
+      this.tileHits.forEach((tile) => {
+       tile.index !== -1 && console.log("I have hit the platform");
+      })
+    }
+    
     this.plotting = false;
   }
 
