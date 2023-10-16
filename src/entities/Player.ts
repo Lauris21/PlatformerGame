@@ -1,9 +1,13 @@
 import PlayScene from "../scenes/Play";
 import initAnimation from "../anims/playerAnims";
-import collidable from "../mixins/collidable"
+import {addCollider} from "../mixins/collidable"
 export class Player extends Phaser.Physics.Arcade.Sprite {
   
-  addCollider: (otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player, callback: any) => void;
+  addCollider: (
+    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+    callback: any
+  ) => void;
+
   scene: PlayScene;
 
   gravity: number;
@@ -19,9 +23,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    //Mixins
-    Object.assign(this, collidable)
-    // this.addCollider = collidable.addCollider.bind(this);
+    Object.assign(this, {addCollider})  //Mixins
 
     this.init();
     this.initEvents();

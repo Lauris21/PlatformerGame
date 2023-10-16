@@ -1,5 +1,5 @@
 import PlayScene from "../scenes/Play";
-import collidable from "../mixins/collidable";
+import { addCollider, raycast } from "../mixins/collidable";
 import { Player } from "./Player";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -7,18 +7,25 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
     callback: any
   ) => void;
-  
+
+  raycast: (
+    body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody,
+    raylength: number,
+    layer: Phaser.Tilemaps.StaticTilemapLayer,
+    precision: number
+  ) => { ray: Phaser.Geom.Line; hasHit: boolean };
+
   scene: PlayScene;
 
   gravity: number;
   speed: number;
-  health: number
-  rayGraphics: Phaser.GameObjects.Graphics
+  health: number;
+  rayGraphics: Phaser.GameObjects.Graphics;
 
-  ray: Phaser.Geom.Line
-  platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer
-  hits: Phaser.Tilemaps.Tile[]
-  hasHit: boolean // Saber si raycasting esta golpeando la plataforma
+  ray: Phaser.Geom.Line;
+  platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer;
+  hits: Phaser.Tilemaps.Tile[];
+  hasHit: boolean; // Saber si raycasting esta golpeando la plataforma
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -27,18 +34,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     //Mixins
-    Object.assign(this, collidable);
+    Object.assign(this, { addCollider, raycast });
     // this.addCollider = collidable.addCollider.bind(this);
 
     this.init();
-    this.initEvents()
+    this.initEvents();
   }
 
   init() {
     this.gravity = 500;
     this.speed = 150;
-    this.health = 100
-    this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}})
+    this.health = 100;
+    this.rayGraphics = this.scene.add.graphics({
+      lineStyle: { width: 2, color: 0xaa00aa },
+    });
 
     this.setGravityY(this.gravity)
       .setSize(20, 45)
@@ -52,32 +61,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  update(time: number, delta:number) {
-    this.setVelocityX(30)
-   this.raycast()
+  update(time: number, delta: number) {
+    this.setVelocityX(30);
+    const { ray, hasHit } = this.raycast(
+      this.body,
+      30,
+      this.platformCollidersLayer,
+      2
+    );
 
-   this.rayGraphics.clear()
-   this.rayGraphics.strokeLineShape(this.ray)
+    this.ray = ray;
+    this.hasHit = hasHit;
+    this.rayGraphics.clear();
+    this.rayGraphics.strokeLineShape(this.ray);
   }
 
   setPlatformColliders(layer: Phaser.Tilemaps.StaticTilemapLayer) {
-this.platformCollidersLayer = layer
-  }
-
-  raycast(raylength: number = 30) {
-    const {x, y, width, halfHeight} = this.body
-    this.ray = new Phaser.Geom.Line()
-    this.hasHit = false
-
-    this.ray.x1 = x + width
-    this.ray.y1 = y + halfHeight
-    this.ray.x2 = this.ray.x1 + raylength
-    this.ray.y2 = this.ray.y1 + raylength
-
-    this.hits = this.platformCollidersLayer.getTilesWithinShape(this.ray)
-
-    if(this.hits.length > 0) {
-      this.hasHit = this.hits.some((hit) => hit.index !== -1)
-    }
+    this.platformCollidersLayer = layer;
   }
 }
