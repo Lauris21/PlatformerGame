@@ -14,7 +14,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     layer: Phaser.Tilemaps.StaticTilemapLayer,
     precision: number,
     prevX: number,
-    facingBody: number
+    facingBody: number,
+    steepnes: number
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
 
   scene: PlayScene;
@@ -53,9 +54,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.gravity = 500;
     this.speed = 75;
     this.timeFromLastTurn = 0;
-    this.maxPatrolDistance = 200;
+    this.maxPatrolDistance = 270;
     this.currentPatrolDistance = 0;
+    this.platformCollidersLayer = null
+
     this.health = 100;
+
     this.rayGraphics = this.scene.add.graphics({
       lineStyle: { width: 2, color: 0xaa00aa },
     });
@@ -64,8 +68,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       .setSize(20, 45)
       .setOffset(9, 20)
       .setCollideWorldBounds(true)
-      .setOrigin(0.5, 1)
       .setImmovable(true)
+      .setOrigin(0.5, 1)
       .setVelocityX(this.speed);
   }
 
@@ -74,12 +78,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number) {
- this.patroll(time)
+    this.patroll(time);
   }
 
   patroll(time: number) {
-
-    if(!this.body || (!(this.body as Phaser.Physics.Arcade.Body).onFloor())){return} // verificamos que esta en el suelo
+    if (!this.body || !(this.body as Phaser.Physics.Arcade.Body).onFloor()) {
+      return; // verificamos que esta en el suelo
+    } 
     this.currentPatrolDistance += Math.abs(this.body.deltaX()); // Aumentamos distancia de patrulla
 
     if (this.body instanceof Phaser.Physics.Arcade.Body) {
@@ -93,7 +98,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.platformCollidersLayer,
       2,
       this.prevX,
-      this.facingBody
+      this.facingBody,
+      0.2
     );
 
     this.ray = ray;
