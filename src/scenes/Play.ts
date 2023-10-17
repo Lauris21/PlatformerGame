@@ -38,6 +38,7 @@ class PlayScene extends Phaser.Scene {
     this.createLayers();
     this.getPlayerZones();
     this.createPlayer();
+    
     this.createEnemies();
     this.createPlayerColliders();
     this.createEnemyColliders();
