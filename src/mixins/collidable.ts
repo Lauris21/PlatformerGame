@@ -25,22 +25,18 @@ export function raycast(
   const { x, y, width, halfHeight } = body;
 
   bodyPossitionDifferenceX += x - prevX;
-console.log(Math.abs(bodyPossitionDifferenceX), "d", precision);
 
   // Lanzamos el rayo si el enemigo se ha movido 2px
   if (
     Math.abs(bodyPossitionDifferenceX) <= precision &&
     prevHasHit !== undefined
   ) {
-   console.log("entro");
    
     return {
       ray: prevRay,
       hasHit: prevHasHit,
     };
   }
-
-  console.log(x, y);
 
   const ray = new Phaser.Geom.Line();
   let hasHit = false;

@@ -44,13 +44,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // this.rayGraphics = scene.add.graphics({
-    //   lineStyle: { width: 2, color: 0xaa00aa }, // Configura el color y el ancho del rayo
-    // });
-
     //Mixins
     Object.assign(this, { addCollider, raycast });
-    // this.addCollider = collidable.addCollider.bind(this);
     
     this.init();
     this.initEvents();
@@ -100,7 +95,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.prevX = this.body.prev.x; // Saber la posición de antes
       this.facingBody = this.body.facing; // Saber la dirección del movimiento
     }
-    
 
     const { ray, hasHit } = this.raycast(
       this.body,
@@ -120,7 +114,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       (!hasHit || this.currentPatrolDistance >= this.maxPatrolDistance) &&
       this.timeFromLastTurn + 100 < time
     ) {
-     // this.bodyPossitionDifferenceX = 0
       // Hacemos que se voltee si hay plataforma o ha alcanzado la distancia máxima de patrulla y minimo cada 100 milisegundos
       this.setFlipX(!this.flipX);
       this.setVelocityX((this.speed = -this.speed));
