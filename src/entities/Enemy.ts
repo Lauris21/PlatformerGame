@@ -12,7 +12,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody,
     raylength: number,
     layer: Phaser.Tilemaps.StaticTilemapLayer,
-    precision: number
+    precision: number,
+    prevX: number,
+    facingBody: number
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
 
   scene: PlayScene;
@@ -26,6 +28,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer;
   hits: Phaser.Tilemaps.Tile[];
   hasHit: boolean; // Saber si raycasting esta golpeando la plataforma
+  prevX: number
+  facingBody: number
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -43,7 +47,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.gravity = 500;
-    this.speed = 150;
+    this.speed = 50;
     this.health = 100;
     this.rayGraphics = this.scene.add.graphics({
       lineStyle: { width: 2, color: 0xaa00aa },
@@ -54,7 +58,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       .setOffset(9, 20)
       .setCollideWorldBounds(true)
       .setOrigin(0.5, 1)
-      .setImmovable(true);
+      .setImmovable(true)
+      .setVelocityX(this.speed);
   }
 
   initEvents() {
@@ -63,15 +68,29 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   update(time: number, delta: number) {
     this.setVelocityX(30);
+
+    if (this.body instanceof Phaser.Physics.Arcade.Body) {
+      this.prevX = this.body.prev.x;
+      this.facingBody = this.body.facing
+    }
+
     const { ray, hasHit } = this.raycast(
       this.body,
       30,
       this.platformCollidersLayer,
-      2
+      2,
+      this.prevX,
+      this.facingBody
     );
 
     this.ray = ray;
     this.hasHit = hasHit;
+
+    if (!hasHit) {
+      this.setFlipX(!this.flipX);
+      this.setVelocityX(this.speed = -this.speed);
+    }
+
     this.rayGraphics.clear();
     this.rayGraphics.strokeLineShape(this.ray);
   }

@@ -16,11 +16,14 @@ export function raycast(
   body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody,
   raylength: number = 30,
   layer: Phaser.Tilemaps.StaticTilemapLayer,
-  precision: number = 0
+  precision: number = 0,
+  prevX: number,
+  facingBody: number
 ) {
-  const { x, y, width, halfHeight } = this.body;
+  const { x, y, width, halfHeight} = body;
+  
 
-  bodyPossitionDifferenceX += x - this.body.prev.x;
+  bodyPossitionDifferenceX += x - prevX;
 
   // Lanzamos el rayo si el enemigo se ha movido 2px
   if ((Math.abs(bodyPossitionDifferenceX) <= precision) && prevHasHit !== undefined) {
@@ -33,22 +36,33 @@ export function raycast(
   const ray = new Phaser.Geom.Line();
   let hasHit = false;
 
-  ray.x1 = x + width;
+switch (facingBody) {
+  case Phaser.Physics.Arcade.FACING_RIGHT:
+    ray.x1 = x + width;
   ray.y1 = y + halfHeight;
   ray.x2 = ray.x1 + raylength;
   ray.y2 = ray.y1 + raylength;
+    break;
 
-  const hits = layer.getTilesWithinShape(this.ray);
+  case Phaser.Physics.Arcade.FACING_LEFT:
+    ray.x1 = x;
+    ray.y1 = y + halfHeight;
+    ray.x2 = ray.x1 - raylength;
+    ray.y2 = ray.y1 + raylength;
+    break;
+}
 
-  if (this.hits?.length > 0) {
-    hasHit = prevHasHit = hits.some(
+  const hits = layer.getTilesWithinShape(ray);
+
+  if (hits?.length > 0) {
+    hasHit = prevHasHit =  hits.some(
       (hit: Phaser.Tilemaps.Tile) => hit.index !== -1
     );
   }
-
+  
   prevRay = ray;
   bodyPossitionDifferenceX = 0
-
+  
   return {
     ray,
     hasHit,
