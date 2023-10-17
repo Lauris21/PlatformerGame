@@ -15,7 +15,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     precision: number,
     prevX: number,
     facingBody: number,
-    steepnes: number
+    steepnes: number,
+    bodyPossitionDifferenceX: number
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
 
   scene: PlayScene;
@@ -35,6 +36,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   timeFromLastTurn: number;
   maxPatrolDistance: number;
   currentPatrolDistance: number;
+  bodyPossitionDifferenceX: number
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -42,10 +44,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    // this.rayGraphics = scene.add.graphics({
+    //   lineStyle: { width: 2, color: 0xaa00aa }, // Configura el color y el ancho del rayo
+    // });
+
     //Mixins
     Object.assign(this, { addCollider, raycast });
     // this.addCollider = collidable.addCollider.bind(this);
-
+    
     this.init();
     this.initEvents();
   }
@@ -54,11 +60,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.gravity = 500;
     this.speed = 75;
     this.timeFromLastTurn = 0;
-    this.maxPatrolDistance = 270;
+    this.maxPatrolDistance = 300;
     this.currentPatrolDistance = 0;
     this.platformCollidersLayer = null
-
     this.health = 100;
+
+
+    this.bodyPossitionDifferenceX = 0
+
 
     this.rayGraphics = this.scene.add.graphics({
       lineStyle: { width: 2, color: 0xaa00aa },
@@ -85,21 +94,23 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (!this.body || !(this.body as Phaser.Physics.Arcade.Body).onFloor()) {
       return; // verificamos que esta en el suelo
     } 
-    this.currentPatrolDistance += Math.abs(this.body.deltaX()); // Aumentamos distancia de patrulla
+    this.currentPatrolDistance += Math.abs(this.prevX - this.prevX); // Aumentamos distancia de patrulla
 
     if (this.body instanceof Phaser.Physics.Arcade.Body) {
       this.prevX = this.body.prev.x; // Saber la posición de antes
       this.facingBody = this.body.facing; // Saber la dirección del movimiento
     }
+    
 
     const { ray, hasHit } = this.raycast(
       this.body,
       30,
       this.platformCollidersLayer,
-      2,
+      1,
       this.prevX,
       this.facingBody,
-      0.2
+      0.2,
+      this.bodyPossitionDifferenceX
     );
 
     this.ray = ray;
@@ -109,6 +120,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       (!hasHit || this.currentPatrolDistance >= this.maxPatrolDistance) &&
       this.timeFromLastTurn + 100 < time
     ) {
+     // this.bodyPossitionDifferenceX = 0
       // Hacemos que se voltee si hay plataforma o ha alcanzado la distancia máxima de patrulla y minimo cada 100 milisegundos
       this.setFlipX(!this.flipX);
       this.setVelocityX((this.speed = -this.speed));

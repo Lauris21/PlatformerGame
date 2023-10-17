@@ -95,7 +95,8 @@ class PlayScene extends Phaser.Scene {
     this.enemies = new Enemies(this);
     const enemyTypes = this.enemies.getTypes();
 
-    this.enemySpawns.objects.forEach((item) => {
+    this.enemySpawns.objects.forEach((item, index) => {
+     
       const enemy = new enemyTypes[item.type](this, item.x, item.y);
       enemy.setPlatformColliders(this.platformColliders)
       this.enemies.add(enemy);

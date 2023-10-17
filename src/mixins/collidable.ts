@@ -8,7 +8,7 @@ export function addCollider(
   return this;
 }
 
-let bodyPossitionDifferenceX: number = 0; // Saber cuantos píxeles se ha movido para lanzar el rayo
+//let bodyPossitionDifferenceX: number = 0; // Saber cuantos píxeles se ha movido para lanzar el rayo
 let prevRay: Phaser.Geom.Line;
 let prevHasHit: boolean;
 
@@ -19,22 +19,28 @@ export function raycast(
   precision: number = 0,
   prevX: number,
   facingBody: number,
-  steepnes: number = 1 // inlinacion rayo
+  steepnes: number = 1, // inlinacion rayo
+  bodyPossitionDifferenceX: number
 ) {
   const { x, y, width, halfHeight } = body;
 
   bodyPossitionDifferenceX += x - prevX;
+console.log(Math.abs(bodyPossitionDifferenceX), "d", precision);
 
   // Lanzamos el rayo si el enemigo se ha movido 2px
   if (
     Math.abs(bodyPossitionDifferenceX) <= precision &&
     prevHasHit !== undefined
   ) {
+   console.log("entro");
+   
     return {
       ray: prevRay,
       hasHit: prevHasHit,
     };
   }
+
+  console.log(x, y);
 
   const ray = new Phaser.Geom.Line();
   let hasHit = false;
