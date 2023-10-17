@@ -28,9 +28,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer;
   hits: Phaser.Tilemaps.Tile[];
   hasHit: boolean; // Saber si raycasting esta golpeando la plataforma
+
   prevX: number;
   facingBody: number;
   timeFromLastTurn: number;
+  maxPatrolDistance: number;
+  currentPatrolDistance: number;
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -48,8 +51,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.gravity = 500;
-    this.speed = 50;
-    this.timeFromLastTurn = 0
+    this.speed = 150;
+    this.timeFromLastTurn = 0;
+    this.maxPatrolDistance = 200;
+    this.currentPatrolDistance = 0;
     this.health = 100;
     this.rayGraphics = this.scene.add.graphics({
       lineStyle: { width: 2, color: 0xaa00aa },
@@ -69,10 +74,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number) {
+    this.currentPatrolDistance += Math.abs(this.body.deltaX()); // Aumentamos distancia de patrulla
 
     if (this.body instanceof Phaser.Physics.Arcade.Body) {
-      this.prevX = this.body.prev.x;
-      this.facingBody = this.body.facing;
+      this.prevX = this.body.prev.x; // Saber la posición de antes
+      this.facingBody = this.body.facing; // Saber la dirección del movimiento
     }
 
     const { ray, hasHit } = this.raycast(
@@ -87,10 +93,15 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.ray = ray;
     this.hasHit = hasHit;
 
-    if (!hasHit && this.timeFromLastTurn + 100 < time) { // Hacemos que se voltee si hay plataforma y minimo cada 100 milisegundos
+    if (
+      (!hasHit || this.currentPatrolDistance >= this.maxPatrolDistance) &&
+      this.timeFromLastTurn + 100 < time
+    ) {
+      // Hacemos que se voltee si hay plataforma o ha alcanzado la distancia máxima de patrulla y minimo cada 100 milisegundos
       this.setFlipX(!this.flipX);
       this.setVelocityX((this.speed = -this.speed));
-      this.timeFromLastTurn = time
+      this.timeFromLastTurn = time;
+      this.currentPatrolDistance = 0;
     }
 
     this.rayGraphics.clear();
