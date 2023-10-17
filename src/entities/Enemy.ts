@@ -51,7 +51,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.gravity = 500;
-    this.speed = 150;
+    this.speed = 75;
     this.timeFromLastTurn = 0;
     this.maxPatrolDistance = 200;
     this.currentPatrolDistance = 0;
@@ -74,6 +74,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number) {
+ this.patroll(time)
+  }
+
+  patroll(time: number) {
+
+    if(!this.body || (!(this.body as Phaser.Physics.Arcade.Body).onFloor())){return} // verificamos que esta en el suelo
     this.currentPatrolDistance += Math.abs(this.body.deltaX()); // Aumentamos distancia de patrulla
 
     if (this.body instanceof Phaser.Physics.Arcade.Body) {
