@@ -25,6 +25,14 @@ pixelPerHealth : number
     this.pixelPerHealth = this.size.width / this.value // dividimos el tamaño de la barra entre su valor 100
 
     scene.add.existing(this.bar)
+
+    this.darw()
+  }
+
+  darw() {
+    this.bar.clear()
+    this.bar.fillStyle(0x9B00FF)
+this.bar.fillRect(this.x, this.y, this.size.width, this.size.height)
   }
 }
 
