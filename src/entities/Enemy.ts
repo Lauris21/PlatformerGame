@@ -1,6 +1,7 @@
 import PlayScene from "../scenes/Play";
 import { addCollider, raycast } from "../mixins/collidable";
 import { Player } from "./Player";
+import { SharedConfig } from "../types";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
@@ -21,6 +22,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   scene: PlayScene;
 
+  config: SharedConfig
+
   gravity: number;
   speed: number;
   health: number;
@@ -40,6 +43,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
+
+    this.config = this.scene.config
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -119,8 +124,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.currentPatrolDistance = 0;
     }
 
-    this.rayGraphics.clear();
-    this.rayGraphics.strokeLineShape(this.ray);
+    if(this.config.debug && ray) {
+      this.rayGraphics.clear();
+      this.rayGraphics.strokeLineShape(this.ray);
+    }
+    
   }
 
   setPlatformColliders(layer: Phaser.Tilemaps.StaticTilemapLayer) {

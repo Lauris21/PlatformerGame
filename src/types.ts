@@ -5,6 +5,7 @@ export type SharedConfig = {
   width: number;
   height: number;
   zoomFactor: number;
+  debug: boolean;
 };
 
 export type EnemyTypes = {

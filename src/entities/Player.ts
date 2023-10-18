@@ -107,12 +107,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.hasBeenHit = true
     this.bounceOff()
 
-    this.scene.time.addEvent({
-      delay: 1000,
-      callback: () => {
-        this.hasBeenHit = false
-      },
-      loop: false
-    })
+    this.scene.time.delayedCall(1000, () => this.hasBeenHit = false)
+
+    // this.scene.time.addEvent({
+    //   delay: 1000,
+    //   callback: () => {
+    //     this.hasBeenHit = false
+    //   },
+    //   loop: false
+    // })
   }
 }

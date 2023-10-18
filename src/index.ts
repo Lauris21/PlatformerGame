@@ -3,24 +3,25 @@ import PlayScene from "./scenes/Play";
 import PreloadScene from "./scenes/Preload";
 import { SharedConfig } from "./types";
 
-const mapWidth: number = 1600 
+const mapWidth: number = 1600;
 
-const width : number= document.body.offsetWidth; // ancho navegador
+const width: number = document.body.offsetWidth; // ancho navegador
 const height: number = 600;
 
-const sharedConfig : SharedConfig = {
+const sharedConfig: SharedConfig = {
   // El desplazamiento de la camara será el ancho del juego menos el ancho del reproductor
   mapOffset: mapWidth > width ? mapWidth : 0,
   width: width,
   height: height,
-  zoomFactor: 1.2
+  zoomFactor: 1.2,
+  debug: false,
 };
 
 //Tienen que ir en orden de ejecución
 const Scenes = [PreloadScene, PlayScene];
 
 // Creamos una nueva escena con la configuracion compartida
-const createScene = (Scene:any) => new Scene(sharedConfig);
+const createScene = (Scene: any) => new Scene(sharedConfig);
 //Inicializamos instancias para las escenas
 const initScenes = () => Scenes.map(createScene);
 
@@ -40,7 +41,7 @@ const config = {
     //utiliza la física de arcade -> gestiona simulaciones físicas (gravedad, velocidad, etc)
     default: "arcade",
     arcade: {
-      debug: true,   // ayuda ver movimientos y a donde va el objeto
+      debug: sharedConfig.debug, // ayuda ver movimientos y a donde va el objeto
     },
   },
   //La escena es lo que puede ver en la pantalla
