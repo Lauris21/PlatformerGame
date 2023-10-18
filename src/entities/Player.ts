@@ -17,6 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   hasBeenHit : boolean
   bounceVelovity: number // velocidad de rebote
+  hitAnims: Phaser.Tweens.Tween // Animación en golpeo
 
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
@@ -92,6 +93,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       : this.play("jump", true);
   }
 
+  playDamageTween() { // Animación cuando somos golpeados
+   return this.scene.tweens.add({
+      targets: this,
+      duration: 100,
+      repeat: -1,
+      tint: 0xffffff
+    })
+  }
+
   bounceOff() {
     this.body.touching.right ? // verificamos si colision es en el lado derecho o izquierdo
     this.setVelocity(-this.bounceVelovity) :
@@ -106,8 +116,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if(this.hasBeenHit){ return}
     this.hasBeenHit = true
     this.bounceOff()
+   this.hitAnims =  this.playDamageTween()
 
-    this.scene.time.delayedCall(1000, () => this.hasBeenHit = false)
+    this.scene.time.delayedCall(1000, () => {
+      this.hasBeenHit = false
+      this.hitAnims.stop()
+      this.clearTint()
+    })
 
     // this.scene.time.addEvent({
     //   delay: 1000,
