@@ -36,7 +36,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   timeFromLastTurn: number;
   maxPatrolDistance: number;
   currentPatrolDistance: number;
-  bodyPossitionDifferenceX: number
+  bodyPossitionDifferenceX: number;
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -46,7 +46,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     //Mixins
     Object.assign(this, { addCollider, raycast });
-    
+
     this.init();
     this.initEvents();
   }
@@ -57,12 +57,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.timeFromLastTurn = 0;
     this.maxPatrolDistance = 300;
     this.currentPatrolDistance = 0;
-    this.platformCollidersLayer = null
+    this.platformCollidersLayer = null;
     this.health = 100;
 
-
-    this.bodyPossitionDifferenceX = 0
-
+    this.bodyPossitionDifferenceX = 0;
 
     this.rayGraphics = this.scene.add.graphics({
       lineStyle: { width: 2, color: 0xaa00aa },
@@ -88,7 +86,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   patroll(time: number) {
     if (!this.body || !(this.body as Phaser.Physics.Arcade.Body).onFloor()) {
       return; // verificamos que esta en el suelo
-    } 
+    }
     this.currentPatrolDistance += Math.abs(this.prevX - this.prevX); // Aumentamos distancia de patrulla
 
     if (this.body instanceof Phaser.Physics.Arcade.Body) {

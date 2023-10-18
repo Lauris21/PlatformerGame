@@ -23,7 +23,7 @@ class PlayScene extends Phaser.Scene {
   graphics: Phaser.GameObjects.Graphics;
   line: Phaser.Geom.Line;
 
-  tileHits: Phaser.Tilemaps.Tile[] // Si el raycasting golpea contra las plataformas del mosaico
+  tileHits: Phaser.Tilemaps.Tile[]; // Si el raycasting golpea contra las plataformas del mosaico
 
   constructor(config: SharedConfig) {
     super("PlayScene");
@@ -43,19 +43,22 @@ class PlayScene extends Phaser.Scene {
     this.setupFollowupCameraOn(this.player);
   }
 
-  finishDrawing(pointer: Phaser.Input.Pointer, layer: Phaser.Tilemaps.StaticTilemapLayer) {
+  finishDrawing(
+    pointer: Phaser.Input.Pointer,
+    layer: Phaser.Tilemaps.StaticTilemapLayer
+  ) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
-    this.graphics.clear()
+    this.graphics.clear();
     this.graphics.strokeLineShape(this.line);
-  
-    this.tileHits = layer.getTilesWithinShape(this.line)
-    
-    if(this.tileHits.length > 0) {
+
+    this.tileHits = layer.getTilesWithinShape(this.line);
+
+    if (this.tileHits.length > 0) {
       this.tileHits.forEach((tile) => {
-       tile.index !== -1 && tile.setCollision(true)
-      })
+        tile.index !== -1 && tile.setCollision(true);
+      });
     }
   }
 
@@ -96,9 +99,8 @@ class PlayScene extends Phaser.Scene {
     const enemyTypes = this.enemies.getTypes();
 
     this.enemySpawns.objects.forEach((item, index) => {
-     
       const enemy = new enemyTypes[item.type](this, item.x, item.y);
-      enemy.setPlatformColliders(this.platformColliders)
+      enemy.setPlatformColliders(this.platformColliders);
       this.enemies.add(enemy);
     });
   }
@@ -145,9 +147,7 @@ class PlayScene extends Phaser.Scene {
     );
     this.end = this.objectsPlayerZones.find((elem) => elem.name === "endZone");
   }
-  update(time: number, delta: number): void {
-    
-  }
+  update(time: number, delta: number): void {}
 }
 
 export default PlayScene;

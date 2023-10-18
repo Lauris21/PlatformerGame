@@ -8,7 +8,6 @@ export function addCollider(
   return this;
 }
 
-//let bodyPossitionDifferenceX: number = 0; // Saber cuantos píxeles se ha movido para lanzar el rayo
 let prevRay: Phaser.Geom.Line;
 let prevHasHit: boolean;
 
@@ -20,25 +19,24 @@ export function raycast(
   prevX: number,
   facingBody: number,
   steepnes: number = 1, // inlinacion rayo
-  bodyPossitionDifferenceX: number
+  bodyPossitionDifferenceX: number // Cuantos pixeles se ha movido el enemigo
 ) {
   const { x, y, width, halfHeight } = body;
 
   bodyPossitionDifferenceX += x - prevX;
 
-  // Lanzamos el rayo si el enemigo se ha movido 2px
+  // si se ha movido menos que la precisiom y prevHashit ya ha sido declarado no lanzamos el rayo
   if (
     Math.abs(bodyPossitionDifferenceX) <= precision &&
     prevHasHit !== undefined
   ) {
-   
     return {
       ray: prevRay,
       hasHit: prevHasHit,
     };
   }
 
-  const ray = new Phaser.Geom.Line();
+  const ray = new Phaser.Geom.Line(); // Es el rayo al que añadimos los parámetros
   let hasHit = false;
 
   switch (facingBody) {
@@ -60,14 +58,14 @@ export function raycast(
   const hits = layer.getTilesWithinShape(ray);
 
   if (hits?.length > 0) {
-    hasHit = prevHasHit = hits.some( // Devuelve true si encuentra alguno diferemte a -1
+    hasHit = prevHasHit = hits.some(
+      // Devuelve true si encuentra alguno diferemte a -1
       (hit: Phaser.Tilemaps.Tile) => hit.index !== -1
     );
   }
 
   prevRay = ray;
   bodyPossitionDifferenceX = 0;
-  
 
   return {
     ray,
