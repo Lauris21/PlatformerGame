@@ -94,11 +94,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   bounceOff() {
     this.body.touching.right ? // verificamos si colision es en el lado derecho o izquierdo
-    this.setVelocity(-this.bounceVelovity, -this.bounceVelovity) :
-    this.setVelocity(this.bounceVelovity, -this.bounceVelovity)
+    this.setVelocity(-this.bounceVelovity) :
+    this.setVelocity(this.bounceVelovity)
+
+    setTimeout(() => {
+      this.setVelocityY(- this.bounceVelovity)
+    }, 0);
   }
 
   takesHit(enemy: Birdman) {
+    if(this.hasBeenHit){ return}
     this.hasBeenHit = true
     this.bounceOff()
   }
