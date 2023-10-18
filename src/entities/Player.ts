@@ -49,7 +49,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.healt = 100;
-    this.hp = new HealthBar(this.scene, 0, 0, this.healt);
+    this.hp = new HealthBar(this.scene, 150, 150, this.healt);
 
     this.setGravityY(this.gravity)
       .setSize(23, 36)

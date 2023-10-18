@@ -29,12 +29,12 @@ const config = {
   //WebGL (web graphics library) API JS para renderizar gráficos en 2 y 3D
   type: Phaser.AUTO,
   ...sharedConfig,
-  scale: {
-    parent: "game-container",
-    mode: Phaser.Scale.FIT, // Escala para ajustar al contenedor
-    width: width,
-    height: height,
-  },
+  // scale: {
+  //   parent: "game-container",
+  //   mode: Phaser.Scale.FIT, // Escala para ajustar al contenedor
+  //   width: width,
+  //   height: height,
+  // },
   // Evita que se vean manchas alrededor de elementos
   pixelArt: true,
   physics: {
