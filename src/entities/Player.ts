@@ -15,6 +15,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   jumpCount: number;
   consecutiveJump: number;
 
+  hasBeenHit : boolean
+  bounceVelovity: number // velocidad de rebote
+
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor(scene: PlayScene, x: number, y: number) {
@@ -34,6 +37,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.playerSpeed = 150;
     this.jumpCount = 0;
     this.consecutiveJump = 1;
+    this.hasBeenHit = false
+    this.bounceVelovity = 250 // velocidad de rebote
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
@@ -50,6 +55,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number): void {
+    if(this.hasBeenHit){ return}
     const { left, right, space, up } = this.cursors;
 
     const onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
@@ -86,8 +92,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       : this.play("jump", true);
   }
 
+  bounceOff() {
+    this.body.touching.right ? // verificamos si colision es en el lado derecho o izquierdo
+    this.setVelocity(-this.bounceVelovity, -this.bounceVelovity) :
+    this.setVelocity(this.bounceVelovity, -this.bounceVelovity)
+  }
+
   takesHit(enemy: Birdman) {
-    console.log("I have been hit", enemy);
-    
+    this.hasBeenHit = true
+    this.bounceOff()
   }
 }
