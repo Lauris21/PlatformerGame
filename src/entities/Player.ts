@@ -1,6 +1,7 @@
 import PlayScene from "../scenes/Play";
 import initAnimation from "../anims/playerAnims";
 import { addCollider } from "../mixins/collidable";
+import { Birdman } from "./BirdMan";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
@@ -83,5 +84,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         ? this.play("run", true)
         : this.play("idle", true)
       : this.play("jump", true);
+  }
+
+  takesHit(enemy: Birdman) {
+    console.log("I have been hit", enemy);
+    
   }
 }

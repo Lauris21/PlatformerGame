@@ -7,6 +7,7 @@ class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[];
   enemies: Enemies;
+  enemy: Birdman
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -99,15 +100,21 @@ class PlayScene extends Phaser.Scene {
     const enemyTypes = this.enemies.getTypes();
 
     this.enemySpawns.objects.forEach((item, index) => {
-      const enemy = new enemyTypes[item.type](this, item.x, item.y);
-      enemy.setPlatformColliders(this.platformColliders);
-      this.enemies.add(enemy);
+      this.enemy = new enemyTypes[item.type](this, item.x, item.y);
+      this.enemy.setPlatformColliders(this.platformColliders);
+      this.enemies.add(this.enemy);
     });
+  }
+  
+
+  onPlayerCollision(player: Player, enemy : Birdman){
+    
+    player.takesHit(enemy)
   }
 
   createEnemyColliders() {
     this.enemies.addCollider(this.platformColliders, null);
-    this.enemies.addCollider(this.player, null);
+    this.enemies.addCollider(this.player, () => this.onPlayerCollision(this.player, this.enemy));
   }
 
   createPlayerColliders() {
