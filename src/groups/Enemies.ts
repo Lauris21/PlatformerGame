@@ -1,3 +1,4 @@
+import Projectiles from "../attacks/Projectiles";
 import { Player } from "../entities/Player";
 import { addCollider, raycast } from "../mixins/collidable";
 import PlayScene from "../scenes/Play";
@@ -7,7 +8,7 @@ import { enemyTypeslist } from "../utils.js/enemyTypes";
 export class Enemies extends Phaser.GameObjects.Group {
   types: EnemyTypes;
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
     callback: any
   ) => void;
   raycast: (

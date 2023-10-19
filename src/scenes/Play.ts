@@ -112,9 +112,14 @@ class PlayScene extends Phaser.Scene {
     player.takesHit(enemy)
   }
 
+  onWeaponHit() {
+    this.enemy.takesHit(this.player.projectiles)
+  }
+
   createEnemyColliders() {
     this.enemies.addCollider(this.platformColliders, null);
     this.enemies.addCollider(this.player, () => this.onPlayerCollision(this.player, this.enemy));
+    this.enemies.addCollider(this.player.projectiles, () => this.onWeaponHit());
   }
 
   createPlayerColliders() {

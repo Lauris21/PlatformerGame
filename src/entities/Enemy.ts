@@ -2,11 +2,12 @@ import PlayScene from "../scenes/Play";
 import { addCollider, raycast } from "../mixins/collidable";
 import { Player } from "./Player";
 import { SharedConfig } from "../types";
+import Projectiles from "../attacks/Projectiles";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
     callback: any
   ) => void;
 
@@ -22,27 +23,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
 
   scene: PlayScene;
-
   config: SharedConfig
-
   gravity: number;
   speed: number;
-  health: number;
   rayGraphics: Phaser.GameObjects.Graphics;
-
   ray: Phaser.Geom.Line;
   platformCollidersLayer: Phaser.Tilemaps.StaticTilemapLayer;
   hits: Phaser.Tilemaps.Tile[];
   hasHit: boolean; // Saber si raycasting esta golpeando la plataforma
-
   prevX: number;
   facingBody: number;
   timeFromLastTurn: number;
   maxPatrolDistance: number;
   currentPatrolDistance: number;
   bodyPossitionDifferenceX: number;
-
   damage : number;
+  health: number;
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -66,8 +62,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.maxPatrolDistance = 300;
     this.currentPatrolDistance = 0;
     this.platformCollidersLayer = null;
-    this.health = 100;
     this.damage = 20
+    this.health = 40
 
     this.bodyPossitionDifferenceX = 0;
 
@@ -137,5 +133,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   setPlatformColliders(layer: Phaser.Tilemaps.StaticTilemapLayer) {
     this.platformCollidersLayer = layer;
+  }
+
+  takesHit(source : Projectiles) {
+this.health -= source.damage
+source.setActive(false)
+source.setVisible(false)
+
+if(this.health <= 0) {
+console.log(`enemy is died`);
+
+}
   }
 }

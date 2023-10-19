@@ -1,7 +1,8 @@
+import Projectiles from "../attacks/Projectiles";
 import { Player } from "../entities/Player";
 
 export function addCollider(
-  otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+  otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
   callback: any
 ) {
   this.scene.physics.add.collider(this, otherGameobject, callback, null, this);

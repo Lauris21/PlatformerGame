@@ -6,6 +6,7 @@ import Projectile from "./Projectile";
 class Projectiles extends Phaser.Physics.Arcade.Group {
 
     timeFromLastShoot : number;
+    damage: number
 
   constructor(scene: PlayScene) {
     super(scene.physics.world, scene);
@@ -18,6 +19,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
       classType: Projectile,
     });
 
+    this.damage = 10
     this.timeFromLastShoot = null
   };
 
@@ -47,6 +49,7 @@ return // no podemos disparar porque no ha pasado el tiempo suficiente
 
     projectile.fire(centerX, center.y);
     this.timeFromLastShoot = getTimestamp()
+
   }
 }
 

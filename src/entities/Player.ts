@@ -7,7 +7,7 @@ import Projectiles from "../attacks/Projectiles";
 import  anims from "../mixins/anims"
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
+    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
     callback: any
   ) => void;
 
