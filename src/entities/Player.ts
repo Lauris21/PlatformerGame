@@ -52,7 +52,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene,
       this.scene.config.leftTopCorner.x + 7,
       this.scene.config.leftTopCorner.y + 7,
-      this.healt
+      this.healt,
+      2
     );
 
     this.setGravityY(this.gravity)
