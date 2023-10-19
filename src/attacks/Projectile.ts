@@ -1,11 +1,12 @@
+import { Enemy } from "../entities/Enemy";
 import PlayScene from "../scenes/Play";
 
 class Projectile extends Phaser.Physics.Arcade.Sprite {
   speed: number;
   maxDistance: number;
   traveledDistance: number;
-  cooldown: number // marca de tiempo
-  damage : number;
+  cooldown: number; // marca de tiempo
+  damage: number;
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -27,15 +28,25 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
     // Desactivamos la bola cuando recorre 300 px
     if (this.traveledDistance >= this.maxDistance) {
       this.body.reset(0, 0);
-      this.setActive(false).setVisible(false);
+      this.activateProjectile(false);
       this.traveledDistance = 0;
     }
   }
 
   fire(x: number, y: number) {
-    this.setActive(true).setVisible(true);
+    this.activateProjectile(true);
     this.body.reset(x, y);
     this.setVelocityX(this.speed);
+  }
+
+  deliversHit(iterator: Enemy) {
+    this.activateProjectile(false);
+    this.traveledDistance = 0;
+    this.body.reset(0, 0);
+  }
+
+  activateProjectile(isActive: boolean) {
+    this.setActive(isActive).setVisible(isActive);
   }
 }
 

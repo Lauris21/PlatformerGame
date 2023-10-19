@@ -4,14 +4,14 @@ import { addCollider } from "../mixins/collidable";
 import { Birdman } from "./BirdMan";
 import HealthBar from "../components/HealthBar";
 import Projectiles from "../attacks/Projectiles";
-import  anims from "../mixins/anims"
+import anims from "../mixins/anims";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
     callback: any
   ) => void;
 
-  isPlayingAnims : (animsKey: string) => boolean
+  isPlayingAnims: (animsKey: string) => boolean;
 
   scene: PlayScene;
 
@@ -39,8 +39,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     //Mixins
-    Object.assign(this, { addCollider }); 
-    Object.assign(this, anims)
+    Object.assign(this, { addCollider });
+    Object.assign(this, anims);
 
     this.init();
     this.initEvents();

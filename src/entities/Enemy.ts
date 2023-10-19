@@ -5,7 +5,6 @@ import { SharedConfig } from "../types";
 import Projectiles from "../attacks/Projectiles";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
-
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
     callback: any
@@ -23,7 +22,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
 
   scene: PlayScene;
-  config: SharedConfig
+  config: SharedConfig;
   gravity: number;
   speed: number;
   rayGraphics: Phaser.GameObjects.Graphics;
@@ -37,13 +36,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   maxPatrolDistance: number;
   currentPatrolDistance: number;
   bodyPossitionDifferenceX: number;
-  damage : number;
+  damage: number;
   health: number;
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
 
-    this.config = this.scene.config
+    this.config = this.scene.config;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -62,8 +61,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.maxPatrolDistance = 300;
     this.currentPatrolDistance = 0;
     this.platformCollidersLayer = null;
-    this.damage = 20
-    this.health = 40
+    this.damage = 20;
+    this.health = 40;
 
     this.bodyPossitionDifferenceX = 0;
 
@@ -124,25 +123,24 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.currentPatrolDistance = 0;
     }
 
-    if(this.config.debug && ray) {
+    if (this.config.debug && ray) {
       this.rayGraphics.clear();
       this.rayGraphics.strokeLineShape(this.ray);
     }
-    
   }
 
   setPlatformColliders(layer: Phaser.Tilemaps.StaticTilemapLayer) {
     this.platformCollidersLayer = layer;
   }
 
-  takesHit(source : Projectiles) {
-this.health -= source.damage
-source.setActive(false)
-source.setVisible(false)
+  takesHit(source: Projectiles) {
+    source.projectile.deliversHit(this);
+    this.health -= source.damage;
+    source.setActive(false);
+    source.setVisible(false);
 
-if(this.health <= 0) {
-console.log(`enemy is died`);
-
-}
+    if (this.health <= 0) {
+      console.log(`enemy is died`);
+    }
   }
 }

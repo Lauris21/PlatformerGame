@@ -4,9 +4,9 @@ import { getTimestamp } from "../utils.js/functions";
 import Projectile from "./Projectile";
 
 class Projectiles extends Phaser.Physics.Arcade.Group {
-
-    timeFromLastShoot : number;
-    damage: number
+  timeFromLastShoot: number;
+  damage: number;
+  projectile: Projectile;
 
   constructor(scene: PlayScene) {
     super(scene.physics.world, scene);
@@ -19,37 +19,39 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
       classType: Projectile,
     });
 
-    this.damage = 10
-    this.timeFromLastShoot = null
-  };
+    this.damage = 10;
+    this.timeFromLastShoot = null;
+  }
 
   fireProjectile(initiator: Player) {
-    const projectile = this.getFirstDead(false);
+    this.projectile = this.getFirstDead(false);
 
-    if (!projectile) {
+    if (!this.projectile) {
       return;
     }
 
-    if(this.timeFromLastShoot && this.timeFromLastShoot + projectile.cooldown > getTimestamp()) {
-return // no podemos disparar porque no ha pasado el tiempo suficiente
+    if (
+      this.timeFromLastShoot &&
+      this.timeFromLastShoot + this.projectile.cooldown > getTimestamp()
+    ) {
+      return; // no podemos disparar porque no ha pasado el tiempo suficiente
     }
 
     const center = initiator.getCenter();
-    let centerX
+    let centerX;
 
     if (initiator.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
-      projectile.speed = Math.abs(projectile.speed);
-      projectile.setFlipX(false);
-      centerX = center.x + 10
+      this.projectile.speed = Math.abs(this.projectile.speed);
+      this.projectile.setFlipX(false);
+      centerX = center.x + 10;
     } else {
-      projectile.speed = -Math.abs(projectile.speed);
-      projectile.setFlipX(true);
-      centerX = center.x - 10
+      this.projectile.speed = -Math.abs(this.projectile.speed);
+      this.projectile.setFlipX(true);
+      centerX = center.x - 10;
     }
 
-    projectile.fire(centerX, center.y);
-    this.timeFromLastShoot = getTimestamp()
-
+    this.projectile.fire(centerX, center.y);
+    this.timeFromLastShoot = getTimestamp();
   }
 }
 
