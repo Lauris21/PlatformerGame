@@ -4,11 +4,14 @@ import { addCollider } from "../mixins/collidable";
 import { Birdman } from "./BirdMan";
 import HealthBar from "../components/HealthBar";
 import Projectiles from "../attacks/Projectiles";
+import  anims from "../mixins/anims"
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
     callback: any
   ) => void;
+
+  isPlayingAnims : (animsKey: string) => boolean
 
   scene: PlayScene;
 
@@ -26,8 +29,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   hp: HealthBar;
   healt: number;
 
-  projectiles : Projectiles
-  lastDirection : number
+  projectiles: Projectiles;
+  lastDirection: number;
 
   constructor(scene: PlayScene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -35,7 +38,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    Object.assign(this, { addCollider }); //Mixins
+    //Mixins
+    Object.assign(this, { addCollider }); 
+    Object.assign(this, anims)
 
     this.init();
     this.initEvents();
@@ -52,7 +57,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
-    this.projectiles = new Projectiles(this.scene)
+    this.projectiles = new Projectiles(this.scene);
 
     this.healt = 100;
     this.hp = new HealthBar(
@@ -71,8 +76,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     initAnimation(this.scene.anims);
 
     this.scene.input.keyboard.on("keydown-Q", () => {
-      this.projectiles.fireProjectile(this)
-    })
+      this.play("throw", true);
+      this.projectiles.fireProjectile(this);
+    });
   }
 
   initEvents() {
@@ -114,6 +120,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpCount = 0;
     }
 
+    if (this.isPlayingAnims("throw")) {
+      // salimos para que se muestre dicha animacion cuando ataco
+      return;
+    }
+
     onFloor
       ? this.body.velocity.x !== 0
         ? this.play("run", true)
@@ -141,7 +152,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }, 0);
   }
 
-  takesHit(enemy: Birdman) { // nos golpean
+  takesHit(enemy: Birdman) {
+    // nos golpean
     if (this.hasBeenHit) {
       return;
     }
@@ -149,10 +161,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.bounceOff();
     this.hitAnims = this.playDamageTween(); // animación
 
-    this.healt -= enemy.damage // reducimos la salud
-    this.hp.decrease(this.healt)
+    this.healt -= enemy.damage; // reducimos la salud
+    this.hp.decrease(this.healt);
 
-    this.scene.time.delayedCall(1000, () => { // limpiamos animación
+    this.scene.time.delayedCall(1000, () => {
+      // limpiamos animación
       this.hasBeenHit = false;
       this.hitAnims.stop();
       this.clearTint();
