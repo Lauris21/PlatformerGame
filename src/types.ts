@@ -6,6 +6,14 @@ export type SharedConfig = {
   height: number;
   zoomFactor: number;
   debug: boolean;
+  leftTopCorner: {
+    x: number;
+    y: number;
+};
+rightTopCorner: {
+  x: number;
+  y: number;
+};
 };
 
 export type EnemyTypes = {

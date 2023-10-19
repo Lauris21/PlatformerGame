@@ -38,7 +38,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-
     this.gravity = 500;
     this.playerSpeed = 150;
     this.jumpCount = 0;
@@ -49,7 +48,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.healt = 100;
-    this.hp = new HealthBar(this.scene, 150, 150, this.healt);
+    this.hp = new HealthBar(
+      this.scene,
+      this.scene.config.leftTopCorner.x,
+      this.scene.config.leftTopCorner.y,
+      this.healt
+    );
 
     this.setGravityY(this.gravity)
       .setSize(23, 36)
