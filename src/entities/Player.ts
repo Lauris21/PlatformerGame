@@ -127,15 +127,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }, 0);
   }
 
-  takesHit(enemy: Birdman) {
+  takesHit(enemy: Birdman) { // nos golpean
     if (this.hasBeenHit) {
       return;
     }
     this.hasBeenHit = true;
     this.bounceOff();
-    this.hitAnims = this.playDamageTween();
+    this.hitAnims = this.playDamageTween(); // animación
 
-    this.scene.time.delayedCall(1000, () => {
+    this.healt -= enemy.damage // reducimos la salud
+    this.hp.decrease(this.healt)
+
+    this.scene.time.delayedCall(1000, () => { // limpiamos animación
       this.hasBeenHit = false;
       this.hitAnims.stop();
       this.clearTint();

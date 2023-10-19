@@ -4,6 +4,7 @@ import { Player } from "./Player";
 import { SharedConfig } from "../types";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
+
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
     callback: any
@@ -41,6 +42,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   currentPatrolDistance: number;
   bodyPossitionDifferenceX: number;
 
+  damage : number;
+
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
 
@@ -64,6 +67,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.currentPatrolDistance = 0;
     this.platformCollidersLayer = null;
     this.health = 100;
+    this.damage = 20
 
     this.bodyPossitionDifferenceX = 0;
 
