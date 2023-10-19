@@ -10,6 +10,7 @@ class HealthBar {
     height: number;
   };
   pixelPerHealth: number;
+  healthWidth : number
 
   constructor(scene: PlayScene, x: number, y: number, health: number) {
     this.bar = new Phaser.GameObjects.Graphics(scene);
@@ -36,11 +37,16 @@ class HealthBar {
     this.bar.clear();
 
     const margin = 2
-    this.bar.fillStyle(0x9b00ff); // color
+    this.bar.fillStyle(0x9b00ff); // margen
     this.bar.fillRect(this.x, this.y, this.size.width + margin, this.size.height + margin); // rellenamos
 
-    this.bar.fillStyle(0xffffff); // color
+    this.bar.fillStyle(0xffff88); // fondo que se muestra a medida que quitan salud
     this.bar.fillRect(this.x + margin, this.y + margin, this.size.width - margin, this.size.height - margin);
+
+    this.healthWidth = Math.floor(this.value * this.pixelPerHealth)
+
+    this.bar.fillStyle(0x00ff00); // salud
+    this.bar.fillRect(this.x + margin, this.y + margin, this.healthWidth - margin, this.size.height - margin);
   }
 }
 
