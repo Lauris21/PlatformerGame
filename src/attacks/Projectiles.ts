@@ -1,8 +1,12 @@
 import { Player } from "../entities/Player";
 import PlayScene from "../scenes/Play";
+import { getTimestamp } from "../utils.js/functions";
 import Projectile from "./Projectile";
 
 class Projectiles extends Phaser.Physics.Arcade.Group {
+
+    timeFromLastShoot : number;
+
   constructor(scene: PlayScene) {
     super(scene.physics.world, scene);
 
@@ -13,13 +17,19 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
       key: "iceball",
       classType: Projectile,
     });
-  }
+
+    this.timeFromLastShoot = null
+  };
 
   fireProjectile(initiator: Player) {
     const projectile = this.getFirstDead(false);
 
     if (!projectile) {
       return;
+    }
+
+    if(this.timeFromLastShoot && this.timeFromLastShoot + projectile.cooldown > getTimestamp()) {
+return // no podemos disparar porque no ha pasado el tiempo suficiente
     }
 
     const center = initiator.getCenter();
@@ -36,6 +46,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
     }
 
     projectile.fire(centerX, center.y);
+    this.timeFromLastShoot = getTimestamp()
   }
 }
 

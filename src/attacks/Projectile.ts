@@ -4,6 +4,7 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
   speed: number;
   maxDistance: number;
   traveledDistance: number;
+  cooldown: number // marca de tiempo
 
   constructor(scene: PlayScene, x: number, y: number, key: string) {
     super(scene, x, y, key);
@@ -14,6 +15,7 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.speed = 300;
     this.maxDistance = 300;
     this.traveledDistance = 0;
+    this.cooldown = 500
   }
 
   preUpdate(time: number, delta: number): void {
