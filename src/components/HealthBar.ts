@@ -8,33 +8,39 @@ class HealthBar {
   size: {
     width: number;
     height: number;
-}
-pixelPerHealth : number
+  };
+  pixelPerHealth: number;
 
   constructor(scene: PlayScene, x: number, y: number, health: number) {
     this.bar = new Phaser.GameObjects.Graphics(scene);
-    this.bar.setScrollFactor(0, 0)
-    
-    this.x = x
-    this.y = y
-    this.value = health
+    this.bar.setScrollFactor(0, 0);
 
-    this.size = { // Tamaño barra de salud
-        width: 40,
-        height: 8
-    }
+    this.x = x;
+    this.y = y;
+    this.value = health;
 
-    this.pixelPerHealth = this.size.width / this.value // dividimos el tamaño de la barra entre su valor 100
+    this.size = {
+      // Tamaño barra de salud
+      width: 50,
+      height: 10,
+    };
 
-    scene.add.existing(this.bar)
+    this.pixelPerHealth = this.size.width / this.value; // dividimos el tamaño de la barra entre su valor 100
 
-    this.darw()
+    scene.add.existing(this.bar);
+
+    this.darw();
   }
 
   darw() {
-    this.bar.clear()
-    this.bar.fillStyle(0x9B00FF)
-this.bar.fillRect(this.x, this.y, this.size.width, this.size.height)
+    this.bar.clear();
+
+    const margin = 2
+    this.bar.fillStyle(0x9b00ff); // color
+    this.bar.fillRect(this.x, this.y, this.size.width + margin, this.size.height + margin); // rellenamos
+
+    this.bar.fillStyle(0xffffff); // color
+    this.bar.fillRect(this.x + margin, this.y + margin, this.size.width - margin, this.size.height - margin);
   }
 }
 
