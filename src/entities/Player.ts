@@ -27,6 +27,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   healt: number;
 
   projectiles : Projectiles
+  lastDirection : number
 
   constructor(scene: PlayScene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -50,6 +51,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
+    this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
     this.projectiles = new Projectiles(this.scene)
 
     this.healt = 100;
@@ -89,9 +91,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
 
     if (left.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
       this.setVelocityX(-this.playerSpeed);
       this.setFlipX(true);
     } else if (right.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       this.setVelocityX(this.playerSpeed);
       this.setFlipX(false);
     } else {
