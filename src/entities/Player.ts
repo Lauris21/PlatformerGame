@@ -3,7 +3,7 @@ import initAnimation from "../anims/playerAnims";
 import { addCollider } from "../mixins/collidable";
 import { Birdman } from "./BirdMan";
 import HealthBar from "../components/HealthBar";
-import Projectile from "../attacks/Projectile";
+import Projectiles from "../attacks/Projectiles";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player,
@@ -26,7 +26,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   hp: HealthBar;
   healt: number;
 
-  projectile : Projectile
+  projectiles : Projectiles
 
   constructor(scene: PlayScene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -50,6 +50,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
+    this.projectiles = new Projectiles(this.scene)
+
     this.healt = 100;
     this.hp = new HealthBar(
       this.scene,
@@ -67,8 +69,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     initAnimation(this.scene.anims);
 
     this.scene.input.keyboard.on("keydown-Q", () => {
-      this.projectile = new Projectile(this.scene, this.x, this.y, "iceball")
-      this.projectile.fire()
+      this.projectiles.fireProjectile()
     })
   }
 
