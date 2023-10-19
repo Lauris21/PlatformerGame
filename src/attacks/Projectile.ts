@@ -22,8 +22,9 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.traveledDistance += this.body.deltaAbsX();
     // Desactivamos la bola cuando recorre 300 px
     if (this.traveledDistance >= this.maxDistance) {
-      this.setActive(false).setVisible(false)
-      this.traveledDistance = 0
+      this.body.reset(0, 0);
+      this.setActive(false).setVisible(false);
+      this.traveledDistance = 0;
     }
   }
 
