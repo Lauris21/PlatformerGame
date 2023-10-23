@@ -15,7 +15,7 @@ const sharedConfig: SharedConfig = {
   width: width,
   height: height,
   zoomFactor: zoomFactor,
-  debug: false,
+  debug: true,
   leftTopCorner: {
     x: (width - width / zoomFactor) / 2,
     y: (height - height / zoomFactor) / 2,

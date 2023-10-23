@@ -22,13 +22,22 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  preUpdate(time: number, delta: number): void {
+    super.preUpdate(time, delta);
+    this.placeEffect();
+  }
+
   placeEffect() {
     if (!this.target && !this.body) {
       return;
     }
 
     const center = this.target.getCenter();
-    this.body.reset(center.x, center.y);
+    if (this.body) {
+      console.log(this.body);
+
+      this.body.reset(center.x, center.y);
+    }
   }
 
   playOn(target: Enemy) {
