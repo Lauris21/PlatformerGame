@@ -12,10 +12,18 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
 
     this.target = null;
     this.effectName = effectName;
+
+    this.on(
+      "animationcomplete",
+      (animation: Phaser.Animations.Animation) => {
+        if (animation.key === this.effectName) this.destroy();
+      },
+      this
+    );
   }
 
   placeEffect() {
-    if (!this.target) {
+    if (!this.target && !this.body) {
       return;
     }
 
