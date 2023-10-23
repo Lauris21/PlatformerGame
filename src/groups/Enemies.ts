@@ -9,7 +9,7 @@ export class Enemies extends Phaser.GameObjects.Group {
   types: EnemyTypes;
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
-    callback: any
+    callback: () => void
   ) => void;
   raycast: (
     body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody,

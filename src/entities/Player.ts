@@ -32,7 +32,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   projectiles: Projectiles;
   lastDirection: number;
 
-  constructor(scene: PlayScene, x: number, y: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
 
     scene.add.existing(this);

@@ -1,5 +1,5 @@
+import SpriteEffect from "../effects/SpriteEffect";
 import { Enemy } from "../entities/Enemy";
-import PlayScene from "../scenes/Play";
 
 class Projectile extends Phaser.Physics.Arcade.Sprite {
   speed: number;
@@ -7,8 +7,9 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
   traveledDistance: number;
   cooldown: number; // marca de tiempo
   damage: number;
+  spriteEffect: SpriteEffect;
 
-  constructor(scene: PlayScene, x: number, y: number, key: string) {
+  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
     super(scene, x, y, key);
 
     scene.add.existing(this);
@@ -43,6 +44,8 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.activateProjectile(false);
     this.traveledDistance = 0;
     this.body.reset(0, 0);
+    new SpriteEffect(this.scene, 0, 0, "hit-effect").playOn(iterator);
+    //this.spriteEffect.
   }
 
   activateProjectile(isActive: boolean) {

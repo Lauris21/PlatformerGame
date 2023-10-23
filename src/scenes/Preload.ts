@@ -23,10 +23,19 @@ class PreloadScene extends Phaser.Scene {
       spacing: 32,
     });
 
-    this.load.spritesheet("player-throw", "assets/player/throw_attack_sheet_1.png", {
+    this.load.spritesheet(
+      "player-throw",
+      "assets/player/throw_attack_sheet_1.png",
+      {
+        frameWidth: 32,
+        frameHeight: 38,
+        spacing: 32,
+      }
+    );
+
+    this.load.spritesheet("hit-sheet", "assets/weapons/hit_effect_sheet.png", {
       frameWidth: 32,
-      frameHeight: 38,
-      spacing: 32,
+      frameHeight: 32,
     });
   }
 

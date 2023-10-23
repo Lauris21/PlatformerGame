@@ -1,5 +1,3 @@
-import PlayScene from "../scenes/Play";
-
 class HealthBar {
   bar: Phaser.GameObjects.Graphics;
   x: number;
@@ -14,7 +12,7 @@ class HealthBar {
   healthWidth: number;
 
   constructor(
-    scene: PlayScene,
+    scene: Phaser.Scene,
     x: number,
     y: number,
     health: number,
@@ -40,10 +38,10 @@ class HealthBar {
   }
 
   decrease(amount: number) {
-    if( amount <= 0) {
-        this.value = 0
+    if (amount <= 0) {
+      this.value = 0;
     } else {
-        this.value = amount;
+      this.value = amount;
     }
     this.draw();
   }

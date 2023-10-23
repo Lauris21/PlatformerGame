@@ -3,11 +3,13 @@ import { Player } from "../entities/Player";
 import { SharedConfig } from "../types";
 import { Birdman } from "../entities/BirdMan";
 import { Enemies } from "../groups/Enemies";
+import initAnims from "../anims/hitSheet";
+import { Enemy } from "../entities/Enemy";
 class PlayScene extends Phaser.Scene {
   player: Player;
-  birdmanEnemies: Birdman[];
+  birdmanEnemies: Birdman[] = [];
   enemies: Enemies;
-  enemy: Birdman
+  enemy: Birdman;
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -42,6 +44,8 @@ class PlayScene extends Phaser.Scene {
     this.createEnemyColliders();
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
+
+    initAnims(this.anims);
   }
 
   finishDrawing(
@@ -100,26 +104,34 @@ class PlayScene extends Phaser.Scene {
     const enemyTypes = this.enemies.getTypes();
 
     this.enemySpawns.objects.forEach((item, index) => {
-      this.enemy = new enemyTypes[item.type](this, item.x, item.y);
-      this.enemy.setPlatformColliders(this.platformColliders);
-      this.enemies.add(this.enemy);
+      const enemy = new enemyTypes[item.type](this, item.x, item.y);
+      enemy.setPlatformColliders(this.platformColliders);
+      this.enemies.add(enemy);
+      this.birdmanEnemies.push(enemy);
     });
   }
-  
 
-  onPlayerCollision(player: Player, enemy : Birdman){
-    
-    player.takesHit(enemy)
+  onPlayerCollision(player: Player, enemy: Birdman) {
+    player.takesHit(enemy);
   }
 
-  onWeaponHit() {
-    this.enemy.takesHit(this.player.projectiles)
+  onWeaponHit(entity: Phaser.GameObjects.GameObject) {
+    const enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
+
+    if (enemy) {
+      enemy.takesHit(this.player.projectiles);
+    }
   }
 
   createEnemyColliders() {
     this.enemies.addCollider(this.platformColliders, null);
-    this.enemies.addCollider(this.player, () => this.onPlayerCollision(this.player, this.enemy));
-    this.enemies.addCollider(this.player.projectiles, () => this.onWeaponHit());
+
+    this.birdmanEnemies.forEach((enemy) => {
+      enemy.addCollider(this.player, () =>
+        this.onPlayerCollision(this.player, enemy)
+      );
+      enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
+    });
   }
 
   createPlayerColliders() {
@@ -138,7 +150,6 @@ class PlayScene extends Phaser.Scene {
       endOfLevel,
       () => {
         endOfLevelOverlap.active = false;
-        console.log("entro");
       }
     );
   }

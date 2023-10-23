@@ -7,7 +7,7 @@ import Projectiles from "../attacks/Projectiles";
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
-    callback: any
+    callback: () => void
   ) => void;
 
   raycast: (
@@ -134,6 +134,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   takesHit(source: Projectiles) {
+    console.log("tomador golpe", this.body.x);
+
     source.projectile.deliversHit(this);
     this.health -= source.damage;
     source.setActive(false);
