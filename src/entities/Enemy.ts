@@ -1,5 +1,6 @@
 import PlayScene from "../scenes/Play";
 import { addCollider, raycast } from "../mixins/collidable";
+import isPlayingAnims from "../mixins/anims";
 import { Player } from "./Player";
 import { SharedConfig } from "../types";
 import Projectiles from "../attacks/Projectiles";
@@ -20,6 +21,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     steepnes: number,
     bodyPossitionDifferenceX: number
   ) => { ray: Phaser.Geom.Line; hasHit: boolean };
+
+  isPlayingAnims: (animsKey: string) => boolean;
 
   scene: PlayScene;
   config: SharedConfig;
@@ -49,6 +52,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     //Mixins
     Object.assign(this, { addCollider, raycast });
+    Object.assign(this, isPlayingAnims);
 
     this.init();
     this.initEvents();
@@ -134,8 +138,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   takesHit(source: Projectiles) {
-    console.log("tomador golpe", this.body.x);
-
     source.projectile.deliversHit(this);
     this.health -= source.damage;
     source.setActive(false);

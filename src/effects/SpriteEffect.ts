@@ -43,8 +43,6 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
 
     const center = this.target.getCenter();
     if (this.body) {
-      console.log(this.body);
-
       this.body.reset(center.x, this.impactPosition.y);
     }
   }
