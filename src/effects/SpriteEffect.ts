@@ -1,10 +1,18 @@
 import { Enemy } from "../entities/Enemy";
+import { impactPosition } from "../types";
 
 export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
   target: Enemy;
   effectName: string;
+  impactPosition: impactPosition;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, effectName: string) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    effectName: string,
+    impactPosition: impactPosition
+  ) {
     super(scene, x, y, effectName);
 
     scene.add.existing(this);
@@ -12,6 +20,7 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
 
     this.target = null;
     this.effectName = effectName;
+    this.impactPosition = impactPosition;
 
     this.on(
       "animationcomplete",
@@ -36,7 +45,7 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
     if (this.body) {
       console.log(this.body);
 
-      this.body.reset(center.x, center.y);
+      this.body.reset(center.x, this.impactPosition.y);
     }
   }
 

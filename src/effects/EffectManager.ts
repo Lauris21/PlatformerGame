@@ -1,4 +1,5 @@
 import { Enemy } from "../entities/Enemy";
+import { impactPosition } from "../types";
 import SpriteEffect from "./SpriteEffect";
 
 export default class EffectManager {
@@ -7,8 +8,8 @@ export default class EffectManager {
     this.scene = scene;
   }
 
-  playEffectOn(effectName: string, target: Enemy) {
-    const effect = new SpriteEffect(this.scene, 0, 0, effectName);
+  playEffectOn(effectName: string, target: Enemy, position: impactPosition) {
+    const effect = new SpriteEffect(this.scene, 0, 0, effectName, position);
     effect.playOn(target);
   }
 }
