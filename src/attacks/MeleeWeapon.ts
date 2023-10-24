@@ -1,7 +1,7 @@
 class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
   damage: number;
   attackSpeed: number;
-  weaponName: string;
+  weaponAnim: string;
   wielder: Phaser.Physics.Arcade.Sprite;
 
   constructor(scene: Phaser.Scene, x: number, y: number, weaponName: string) {
@@ -12,7 +12,7 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
 
     this.damage = 15;
     this.attackSpeed = 1000;
-    this.weaponName = weaponName;
+    this.weaponAnim = weaponName + "-swing";
     this.wielder = null;
 
     this.activateWeapon(false);
@@ -22,6 +22,7 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     this.wielder = wielder; // Establecemos al constructor
     this.activateWeapon(true);
     this.body.reset(wielder.x, wielder.y);
+    this.anims.play(this.weaponAnim, true);
   }
 
   activateWeapon(isActive: boolean) {

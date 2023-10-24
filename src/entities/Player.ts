@@ -61,7 +61,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
     this.projectiles = new Projectiles(this.scene);
-    this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-attack");
+    this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-default");
 
     this.healt = 100;
     this.hp = new HealthBar(
