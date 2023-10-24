@@ -31,7 +31,10 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
       "animationcomplete",
       (animation: Phaser.Animations.Animation) => {
         if (animation.key === this.weaponAnim) {
+          console.log("salimos ");
+
           this.activateWeapon(false);
+          this.body.checkCollision.none = false;
           this.body.reset(0, 0);
         }
       },
@@ -64,8 +67,9 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
   }
 
   deliversHit(target: Enemy) {
-    const impactPosition = { x: this.x, y: this.y }; // Definimos donde va a impactar
+    const impactPosition = { x: this.x, y: this.getRightCenter().y }; // Definimos donde va a impactar
     this.effectManager.playEffectOn("hit-effect", target, impactPosition);
+    this.body.checkCollision.none = true;
   }
 
   activateWeapon(isActive: boolean) {
