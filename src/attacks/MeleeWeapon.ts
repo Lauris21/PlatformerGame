@@ -1,8 +1,10 @@
+import { Player } from "../entities/Player";
+
 class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
   damage: number;
   attackSpeed: number;
   weaponAnim: string;
-  wielder: Phaser.Physics.Arcade.Sprite;
+  wielder: Player;
 
   constructor(scene: Phaser.Scene, x: number, y: number, weaponName: string) {
     super(scene, x, y, weaponName);
@@ -16,8 +18,9 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     this.wielder = null;
 
     this.setOrigin(0.5, 1);
+    this.setDepth(10); // Profundidad
 
-    this.activateWeapon(false);
+    this.activateWeapon(false); // La desactivamos
 
     this.on(
       "animationcomplete",
@@ -31,11 +34,28 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  preUpdate(time: number, delta: number): void {
+    // Actualizamos para saber si lanzamos la animación a un lado u otro
+    super.preUpdate(time, delta);
+
+    if (!this.active) {
+      return;
+    }
+
+    // Hay que saber posición jugador
+    if (this.wielder.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
+      this.setFlipX(false);
+      this.body.reset(this.wielder.x + 15, this.wielder.y);
+    } else {
+      this.setFlipX(true);
+      this.body.reset(this.wielder.x - 15, this.wielder.y);
+    }
+  }
+
   swing(wielder: Phaser.Physics.Arcade.Sprite) {
-    this.wielder = wielder; // Establecemos al constructor
+    this.wielder = wielder as Player; // Establecemos al constructor
     this.activateWeapon(true);
-    this.body.reset(wielder.x, wielder.y);
-    this.anims.play(this.weaponAnim, true);
+    this.anims.play(this.weaponAnim, true); // Activamos las animaciones
   }
 
   activateWeapon(isActive: boolean) {
