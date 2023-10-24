@@ -8,7 +8,10 @@ import anims from "../mixins/anims";
 import MeleeWeapon from "../attacks/MeleeWeapon";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
+    otherGameobject:
+      | Phaser.Tilemaps.StaticTilemapLayer
+      | Projectiles
+      | Phaser.Physics.Arcade.Sprite,
     callback: any
   ) => void;
 
@@ -179,13 +182,5 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.hitAnims.stop();
       this.clearTint();
     });
-
-    // this.scene.time.addEvent({
-    //   delay: 1000,
-    //   callback: () => {
-    //     this.hasBeenHit = false
-    //   },
-    //   loop: false
-    // })
   }
 }

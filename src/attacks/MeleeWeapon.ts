@@ -1,3 +1,5 @@
+import EffectManager from "../effects/EffectManager";
+import { Enemy } from "../entities/Enemy";
 import { Player } from "../entities/Player";
 
 class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
@@ -5,6 +7,7 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
   attackSpeed: number;
   weaponAnim: string;
   wielder: Player;
+  effectManager: EffectManager;
 
   constructor(scene: Phaser.Scene, x: number, y: number, weaponName: string) {
     super(scene, x, y, weaponName);
@@ -16,6 +19,8 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     this.attackSpeed = 1000;
     this.weaponAnim = weaponName + "-swing";
     this.wielder = null;
+
+    this.effectManager = new EffectManager(this.scene);
 
     this.setOrigin(0.5, 1);
     this.setDepth(10); // Profundidad
@@ -56,6 +61,11 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     this.wielder = wielder as Player; // Establecemos al constructor
     this.activateWeapon(true);
     this.anims.play(this.weaponAnim, true); // Activamos las animaciones
+  }
+
+  deliversHit(target: Enemy) {
+    const impactPosition = { x: this.x, y: this.y }; // Definimos donde va a impactar
+    this.effectManager.playEffectOn("hit-effect", target, impactPosition);
   }
 
   activateWeapon(isActive: boolean) {

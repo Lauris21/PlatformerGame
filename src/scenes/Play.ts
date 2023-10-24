@@ -123,6 +123,14 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  onMeleeWeaponHit(entity: Phaser.GameObjects.GameObject) {
+    const enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
+
+    if (enemy) {
+      enemy.takesHit(this.player.meleeWeapon);
+    }
+  }
+
   createEnemyColliders() {
     this.enemies.addCollider(this.platformColliders, null);
 
@@ -131,6 +139,9 @@ class PlayScene extends Phaser.Scene {
         this.onPlayerCollision(this.player, enemy)
       );
       enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
+      enemy.addOverlap(this.player.meleeWeapon, () =>
+        this.onMeleeWeaponHit(enemy)
+      );
     });
   }
 

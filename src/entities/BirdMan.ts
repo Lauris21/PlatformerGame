@@ -2,6 +2,7 @@ import PlayScene from "../scenes/Play";
 import { Enemy } from "./Enemy";
 import initAnims from "../anims/birdmanAnims";
 import Projectiles from "../attacks/Projectiles";
+import MeleeWeapon from "../attacks/MeleeWeapon";
 export class Birdman extends Enemy {
   constructor(scene: PlayScene, x: number, y: number) {
     super(scene, x, y, "birdman");
@@ -24,7 +25,7 @@ export class Birdman extends Enemy {
     this.play("birdman-idle", true);
   }
 
-  takesHit(source: Projectiles) {
+  takesHit(source: Projectiles | MeleeWeapon) {
     super.takesHit(source);
     this.play("birdman-hurt", true);
   }

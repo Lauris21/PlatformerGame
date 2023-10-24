@@ -1,13 +1,25 @@
 import PlayScene from "../scenes/Play";
-import { addCollider, raycast } from "../mixins/collidable";
+import { addCollider, raycast, addOverlap } from "../mixins/collidable";
 import isPlayingAnims from "../mixins/anims";
 import { Player } from "./Player";
 import { SharedConfig } from "../types";
 import Projectiles from "../attacks/Projectiles";
+import MeleeWeapon from "../attacks/MeleeWeapon";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
+    otherGameobject:
+      | Phaser.Tilemaps.StaticTilemapLayer
+      | Projectiles
+      | Phaser.Physics.Arcade.Sprite,
+    callback: () => void
+  ) => void;
+
+  addOverlap: (
+    otherGameobject:
+      | Phaser.Tilemaps.StaticTilemapLayer
+      | Projectiles
+      | Phaser.Physics.Arcade.Sprite,
     callback: () => void
   ) => void;
 
@@ -51,7 +63,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     //Mixins
-    Object.assign(this, { addCollider, raycast });
+    Object.assign(this, { addCollider, raycast, addOverlap });
     Object.assign(this, isPlayingAnims);
 
     this.init();
@@ -149,8 +161,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.platformCollidersLayer = layer;
   }
 
-  takesHit(source: Projectiles) {
-    source.projectile.deliversHit(this);
+  takesHit(source: Projectiles | MeleeWeapon) {
+    if ("projectile" in source) {
+      source.projectile.deliversHit(this);
+    } else {
+      source.deliversHit(this);
+    }
+
     this.health -= source.damage;
     source.setActive(false);
     source.setVisible(false);

@@ -8,7 +8,10 @@ import { enemyTypeslist } from "../utils.js/enemyTypes";
 export class Enemies extends Phaser.GameObjects.Group {
   types: EnemyTypes;
   addCollider: (
-    otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
+    otherGameobject:
+      | Phaser.Tilemaps.StaticTilemapLayer
+      | Projectiles
+      | Phaser.Physics.Arcade.Sprite,
     callback: () => void
   ) => void;
   raycast: (
