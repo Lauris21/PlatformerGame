@@ -5,6 +5,7 @@ import { Birdman } from "./BirdMan";
 import HealthBar from "../components/HealthBar";
 import Projectiles from "../attacks/Projectiles";
 import anims from "../mixins/anims";
+import MeleeWeapon from "../attacks/MeleeWeapon";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject: Phaser.Tilemaps.StaticTilemapLayer | Player | Projectiles,
@@ -32,6 +33,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   projectiles: Projectiles;
   lastDirection: number;
 
+  meleeWeapon: MeleeWeapon;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
 
@@ -58,6 +61,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
     this.projectiles = new Projectiles(this.scene);
+    this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-attack");
 
     this.healt = 100;
     this.hp = new HealthBar(
@@ -78,6 +82,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.input.keyboard.on("keydown-Q", () => {
       this.play("throw", true);
       this.projectiles.fireProjectile(this);
+    });
+
+    this.scene.input.keyboard.on("keydown-E", () => {
+      this.play("throw", true);
+      this.meleeWeapon.swing(this);
     });
   }
 
