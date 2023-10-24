@@ -88,7 +88,19 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number) {
-    this.patroll(time);
+    if (this.getBounds().bottom > 600) {
+      // Eliminamos enemy
+      this.scene.events.removeListener(
+        Phaser.Scenes.Events.UPDATE,
+        this.update,
+        this
+      );
+      this.setActive(false);
+      this.rayGraphics.clear();
+      this.destroy();
+      return;
+    }
+    this.patroll(time); // Patrulla
   }
 
   patroll(time: number) {

@@ -11,6 +11,10 @@ export class Birdman extends Enemy {
   update(time: number, delta: number) {
     super.update(time, delta);
 
+    if (!this.active) {
+      return; // comprobamos que el super no este destruido
+    }
+
     if (this.isPlayingAnims("birdman-hurt")) {
       console.log(this.isPlayingAnims("birdman-hurt"));
 
