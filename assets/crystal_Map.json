@@ -243,11 +243,11 @@
                "name":"Spawn",
                "point":true,
                "rotation":0,
-               "type":"Birdman",
+               "type":"Snaky",
                "visible":true,
                "width":0,
-               "x":422.622747047856,
-               "y":169.581816567522
+               "x":937.814292622493,
+               "y":539.462926210851
               }, 
               {
                "height":0,
@@ -259,7 +259,31 @@
                "visible":true,
                "width":0,
                "x":1093.84711000621,
-               "y":170.469679481488
+               "y":174.873026024861
+              }, 
+              {
+               "height":0,
+               "id":6,
+               "name":"Spawn",
+               "point":true,
+               "rotation":0,
+               "type":"Birdman",
+               "visible":true,
+               "width":0,
+               "x":418.317921620432,
+               "y":176.133861734919
+              }, 
+              {
+               "height":0,
+               "id":7,
+               "name":"Spawn",
+               "point":true,
+               "rotation":0,
+               "type":"Snaky",
+               "visible":true,
+               "width":0,
+               "x":680.317040951123,
+               "y":306.032584764421
               }],
          "opacity":1,
          "type":"objectgroup",

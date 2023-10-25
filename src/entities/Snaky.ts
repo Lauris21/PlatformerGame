@@ -1,12 +1,18 @@
 import PlayScene from "../scenes/Play";
 import { Enemy } from "./Enemy";
-import initAnims from "../anims/birdmanAnims";
+import initAnims from "../anims/snakyAnims";
 import Projectiles from "../attacks/Projectiles";
 import MeleeWeapon from "../attacks/MeleeWeapon";
-export class Birdman extends Enemy {
+
+export class Snaky extends Enemy {
   constructor(scene: PlayScene, x: number, y: number) {
-    super(scene, x, y, "birdman");
+    super(scene, x, y, "snaky");
     initAnims(this.scene.anims);
+  }
+
+  init() {
+    super.init();
+    this.speed = 50;
   }
 
   update(time: number, delta: number) {
@@ -16,15 +22,15 @@ export class Birdman extends Enemy {
       return; // comprobamos que el super no este destruido
     }
 
-    if (this.isPlayingAnims("birdman-hurt")) {
+    if (this.isPlayingAnims("snaky-hurt")) {
       return;
     }
 
-    this.play("birdman-idle", true);
+    this.play("snaky-walk", true);
   }
 
   takesHit(source: Projectiles | MeleeWeapon) {
     super.takesHit(source);
-    this.play("birdman-hurt", true);
+    this.play("snaky-hurt", true);
   }
 }

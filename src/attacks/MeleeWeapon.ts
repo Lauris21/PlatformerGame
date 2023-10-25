@@ -30,9 +30,8 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     this.on(
       "animationcomplete",
       (animation: Phaser.Animations.Animation) => {
+        console.log("salimos ", animation.key);
         if (animation.key === this.weaponAnim) {
-          console.log("salimos ");
-
           this.activateWeapon(false);
           this.body.checkCollision.none = false;
           this.body.reset(0, 0);
@@ -45,6 +44,7 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
   preUpdate(time: number, delta: number): void {
     // Actualizamos para saber si lanzamos la animación a un lado u otro
     super.preUpdate(time, delta);
+    console.log(this.active);
 
     if (!this.active) {
       return;
@@ -53,14 +53,15 @@ class MeleeWeapon extends Phaser.Physics.Arcade.Sprite {
     // Hay que saber posición jugador
     if (this.wielder.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
       this.setFlipX(false);
-      this.body.reset(this.wielder.x + 15, this.wielder.y);
+      this.body.reset(this.wielder.x + 10, this.wielder.y);
     } else {
       this.setFlipX(true);
-      this.body.reset(this.wielder.x - 15, this.wielder.y);
+      this.body.reset(this.wielder.x - 10, this.wielder.y);
     }
   }
 
   swing(wielder: Phaser.Physics.Arcade.Sprite) {
+    console.log("colisionnnn", this.weaponAnim);
     this.wielder = wielder as Player; // Establecemos al constructor
     this.activateWeapon(true);
     this.anims.play(this.weaponAnim, true); // Activamos las animaciones
