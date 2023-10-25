@@ -6,6 +6,7 @@ import HealthBar from "../components/HealthBar";
 import Projectiles from "../attacks/Projectiles";
 import anims from "../mixins/anims";
 import MeleeWeapon from "../attacks/MeleeWeapon";
+import { getTimestamp } from "../utils.js/functions";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject:
@@ -37,6 +38,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   lastDirection: number;
 
   meleeWeapon: MeleeWeapon;
+  timeFromLastSwing: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -88,8 +90,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.scene.input.keyboard.on("keydown-E", () => {
+      if (
+        this.timeFromLastSwing &&
+        this.timeFromLastSwing + this.meleeWeapon.attackSpeed > getTimestamp()
+      ) {
+        return;
+      }
       this.play("throw", true);
       this.meleeWeapon.swing(this);
+      this.timeFromLastSwing = getTimestamp();
     });
   }
 
