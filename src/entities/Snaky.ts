@@ -13,6 +13,8 @@ export class Snaky extends Enemy {
   init() {
     super.init();
     this.speed = 50;
+
+    this.setSize(12, 45).setOffset(10, 15);
   }
 
   update(time: number, delta: number) {

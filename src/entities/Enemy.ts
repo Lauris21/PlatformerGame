@@ -87,8 +87,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.setGravityY(this.gravity)
-      .setSize(20, 45)
-      .setOffset(9, 20)
       .setCollideWorldBounds(true)
       .setImmovable(true)
       .setOrigin(0.5, 1)
