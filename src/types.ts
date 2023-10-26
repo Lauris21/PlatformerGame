@@ -1,4 +1,5 @@
 import { Birdman } from "./entities/BirdMan";
+import { Snaky } from "./entities/Snaky";
 
 export type SharedConfig = {
   mapOffset: number;

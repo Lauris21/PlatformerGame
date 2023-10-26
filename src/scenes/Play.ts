@@ -112,7 +112,7 @@ class PlayScene extends Phaser.Scene {
         this.birdmanEnemies.push(enemy);
       }
       if (item.type == "Snaky") {
-        this.snakyEnemies.push(enemy);
+        this.snakyEnemies.push(enemy as Snaky);
       }
     });
   }

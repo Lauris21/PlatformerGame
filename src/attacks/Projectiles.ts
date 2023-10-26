@@ -1,4 +1,5 @@
 import { Player } from "../entities/Player";
+import { Snaky } from "../entities/Snaky";
 import PlayScene from "../scenes/Play";
 import { getTimestamp } from "../utils.js/functions";
 import Projectile from "./Projectile";
@@ -8,14 +9,14 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
   damage: number;
   projectile: Projectile;
 
-  constructor(scene: PlayScene) {
+  constructor(scene: PlayScene, key: string) {
     super(scene.physics.world, scene);
 
     this.createMultiple({
       frameQuantity: 5,
       active: false,
       visible: false,
-      key: "iceball",
+      key,
       classType: Projectile,
     });
 
@@ -23,7 +24,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
     this.timeFromLastShoot = null;
   }
 
-  fireProjectile(initiator: Player) {
+  fireProjectile(initiator: Player | Snaky) {
     this.projectile = this.getFirstDead(false);
 
     if (!this.projectile) {
