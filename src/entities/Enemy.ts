@@ -1,7 +1,6 @@
 import PlayScene from "../scenes/Play";
 import { addCollider, raycast, addOverlap } from "../mixins/collidable";
 import isPlayingAnims from "../mixins/anims";
-import { Player } from "./Player";
 import { SharedConfig } from "../types";
 import Projectiles from "../attacks/Projectiles";
 import MeleeWeapon from "../attacks/MeleeWeapon";

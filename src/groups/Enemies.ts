@@ -1,5 +1,4 @@
 import Projectiles from "../attacks/Projectiles";
-import { Player } from "../entities/Player";
 import { addCollider, raycast } from "../mixins/collidable";
 import PlayScene from "../scenes/Play";
 import { EnemyTypes } from "../types";

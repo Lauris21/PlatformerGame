@@ -4,12 +4,12 @@ import { SharedConfig } from "../types";
 import { Birdman } from "../entities/BirdMan";
 import { Enemies } from "../groups/Enemies";
 import initAnims from "../anims/hitSheet";
-import { Enemy } from "../entities/Enemy";
+import { Snaky } from "../entities/Snaky";
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[] = [];
+  snakyEnemies: Snaky[] = [];
   enemies: Enemies;
-  enemy: Birdman;
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -105,18 +105,30 @@ class PlayScene extends Phaser.Scene {
 
     this.enemySpawns.objects.forEach((item, index) => {
       const enemy = new enemyTypes[item.type](this, item.x, item.y);
+
       enemy.setPlatformColliders(this.platformColliders);
       this.enemies.add(enemy);
-      this.birdmanEnemies.push(enemy);
+      if (item.type == "Birdman") {
+        this.birdmanEnemies.push(enemy);
+      }
+      if (item.type == "Snaky") {
+        this.snakyEnemies.push(enemy);
+      }
     });
   }
 
-  onPlayerCollision(player: Player, enemy: Birdman) {
+  onPlayerCollision(player: Player, enemy: Birdman | Snaky) {
     player.takesHit(enemy);
   }
 
   onWeaponHit(entity: Phaser.GameObjects.GameObject) {
-    const enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
+    let enemy;
+    if (entity.constructor.name == "Birdman") {
+      enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
+    }
+    if (entity.constructor.name == "Snaky") {
+      enemy = this.snakyEnemies.find((e) => e.body === entity.body);
+    }
 
     if (enemy) {
       enemy.takesHit(this.player.projectiles);
@@ -124,8 +136,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   onMeleeWeaponHit(entity: Phaser.GameObjects.GameObject) {
-    const enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
-
+    let enemy;
+    if (entity.constructor.name == "Birdman") {
+      enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
+    }
+    if (entity.constructor.name == "Snaky") {
+      enemy = this.snakyEnemies.find((e) => e.body === entity.body);
+    }
     if (enemy) {
       enemy.takesHit(this.player.meleeWeapon);
     }
@@ -135,6 +152,16 @@ class PlayScene extends Phaser.Scene {
     this.enemies.addCollider(this.platformColliders, null);
 
     this.birdmanEnemies.forEach((enemy) => {
+      enemy.addCollider(this.player, () =>
+        this.onPlayerCollision(this.player, enemy)
+      );
+      enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
+      enemy.addOverlap(this.player.meleeWeapon, () =>
+        this.onMeleeWeaponHit(enemy)
+      );
+    });
+
+    this.snakyEnemies.forEach((enemy) => {
       enemy.addCollider(this.player, () =>
         this.onPlayerCollision(this.player, enemy)
       );

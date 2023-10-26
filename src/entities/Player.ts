@@ -7,6 +7,7 @@ import Projectiles from "../attacks/Projectiles";
 import anims from "../mixins/anims";
 import MeleeWeapon from "../attacks/MeleeWeapon";
 import { getTimestamp } from "../utils.js/functions";
+import { Snaky } from "./Snaky";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject:
@@ -173,7 +174,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }, 0);
   }
 
-  takesHit(enemy: Birdman) {
+  takesHit(enemy: Birdman | Snaky) {
     // nos golpean
     if (this.hasBeenHit) {
       return;
