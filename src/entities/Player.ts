@@ -114,12 +114,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
-    const { left, right, space, up } = this.cursors;
+    const { left, right, space, up, down } = this.cursors;
 
     const onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
 
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
     const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
+
+    if (down.isDown && onFloor) {
+      this.body.setSize(this.width, this.height / 2);
+      this.setOffset(0, this.height / 2); // desplazamiento
+      this.setVelocityX(0);
+    } else {
+      this.body.setSize(this.width, 38);
+      this.setOffset(0, 0);
+    }
 
     if (left.isDown) {
       this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
@@ -145,7 +154,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpCount = 0;
     }
 
-    if (this.isPlayingAnims("throw")) {
+    if (down.isDown) {
+      this.play("slide", true);
+    }
+
+    if (this.isPlayingAnims("throw") || this.isPlayingAnims("slide")) {
       // salimos para que se muestre dicha animacion cuando ataco
       return;
     }
