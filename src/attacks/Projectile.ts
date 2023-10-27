@@ -1,5 +1,6 @@
 import EffectManager from "../effects/EffectManager";
 import { Enemy } from "../entities/Enemy";
+import { Player } from "../entities/Player";
 
 class Projectile extends Phaser.Physics.Arcade.Sprite {
   speed: number;
@@ -47,7 +48,8 @@ class Projectile extends Phaser.Physics.Arcade.Sprite {
     anim && this.play(anim, true);
   }
 
-  deliversHit(target: Enemy) {
+  // Alcanzamos al objetivo
+  deliversHit(target: Enemy | Player) {
     this.activateProjectile(false);
     this.traveledDistance = 0;
     const impactPosition = { x: this.x, y: this.y }; // Definimos donde va a impactar

@@ -8,6 +8,8 @@ import anims from "../mixins/anims";
 import MeleeWeapon from "../attacks/MeleeWeapon";
 import { getTimestamp } from "../utils.js/functions";
 import { Snaky } from "./Snaky";
+import Projectile from "../attacks/Projectile";
+import { Enemy } from "./Enemy";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject:
@@ -202,11 +204,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.hasBeenHit = true;
     this.bounceOff();
     this.hitAnims = this.playDamageTween(); // animación
-    const damage = 10;
-    this.healt -= damage;
-    this.hp.decrease(this.healt);
+    let damage: number;
 
-    console.log();
+    projectiles.getChildren().forEach((projectile, index) => {
+      if (projectile instanceof Projectile) {
+        damage = projectile.damage;
+        projectile.deliversHit(this);
+        projectile.setActive(false);
+        projectile.setVisible(false);
+      }
+    });
+
+    this.healt -= damage;
+    console.log(damage);
+
+    this.hp.decrease(this.healt);
 
     // limpiamos animación
     this.scene.time.delayedCall(1000, () => {

@@ -1,8 +1,9 @@
 import { Enemy } from "../entities/Enemy";
+import { Player } from "../entities/Player";
 import { impactPosition } from "../types";
 
 export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
-  target: Enemy;
+  target: Enemy | Player;
   effectName: string;
   impactPosition: impactPosition;
 
@@ -47,7 +48,7 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  playOn(target: Enemy) {
+  playOn(target: Enemy | Player) {
     this.target = target;
     this.play(this.effectName, true);
     this.placeEffect();
