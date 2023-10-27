@@ -23,4 +23,14 @@ export default (anims: Phaser.Animations.AnimationManager): void => {
     frameRate: 5,
     repeat: -1,
   });
+
+  anims.create({
+    key: "iceball",
+    frames: [
+      { key: "iceball-1", frame: 0 },
+      { key: "iceball-2", frame: 0 },
+    ],
+    frameRate: 5,
+    repeat: -1,
+  });
 };

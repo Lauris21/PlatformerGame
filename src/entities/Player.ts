@@ -66,7 +66,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
-    this.projectiles = new Projectiles(this.scene, "iceball");
+    this.projectiles = new Projectiles(this.scene, "iceball-1");
     this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-default");
 
     this.healt = 100;
@@ -87,7 +87,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.input.keyboard.on("keydown-Q", () => {
       this.play("throw", true);
-      this.projectiles.fireProjectile(this, "");
+      this.projectiles.fireProjectile(this, "iceball");
     });
 
     this.scene.input.keyboard.on("keydown-E", () => {
