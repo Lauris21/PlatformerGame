@@ -87,7 +87,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.input.keyboard.on("keydown-Q", () => {
       this.play("throw", true);
-      this.projectiles.fireProjectile(this);
+      this.projectiles.fireProjectile(this, "");
     });
 
     this.scene.input.keyboard.on("keydown-E", () => {

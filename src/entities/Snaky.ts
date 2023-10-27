@@ -37,7 +37,7 @@ export class Snaky extends Enemy {
     }
 
     if (this.timeFromLastAttack + this.attackDelay <= time) {
-      this.projectiles.fireProjectile(this); // Lanzamos el proyectil pasado el delay
+      this.projectiles.fireProjectile(this, "fireball"); // Lanzamos el proyectil pasado el delay
       this.timeFromLastAttack = time;
       this.attackDelay = this.getAttackDelay();
     }

@@ -24,7 +24,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
     this.timeFromLastShoot = null;
   }
 
-  fireProjectile(initiator: Player | Snaky) {
+  fireProjectile(initiator: Player | Snaky, anim: string) {
     this.projectile = this.getFirstDead(false);
 
     if (!this.projectile) {
@@ -51,7 +51,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
       centerX = center.x - 10;
     }
 
-    this.projectile.fire(centerX, center.y);
+    this.projectile.fire(centerX, center.y, anim);
     this.timeFromLastShoot = getTimestamp();
   }
 }

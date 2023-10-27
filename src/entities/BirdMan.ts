@@ -15,8 +15,6 @@ export class Birdman extends Enemy {
   }
 
   update(time: number, delta: number) {
-    console.log(this.ray);
-
     super.update(time, delta);
 
     if (!this.active) {
