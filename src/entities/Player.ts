@@ -13,7 +13,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     otherGameobject:
       | Phaser.Tilemaps.StaticTilemapLayer
       | Projectiles
-      | Phaser.Physics.Arcade.Sprite,
+      | Phaser.Physics.Arcade.Sprite
+      | Phaser.GameObjects.Group,
     callback: any
   ) => void;
 
@@ -188,6 +189,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.time.delayedCall(1000, () => {
       // limpiamos animación
+      this.hasBeenHit = false;
+      this.hitAnims.stop();
+      this.clearTint();
+    });
+  }
+
+  takesProjectilesHit(projectiles: Phaser.GameObjects.Group) {
+    if (this.hasBeenHit) {
+      return;
+    }
+    this.hasBeenHit = true;
+    this.bounceOff();
+    this.hitAnims = this.playDamageTween(); // animación
+    const damage = 10;
+    this.healt -= damage;
+    this.hp.decrease(this.healt);
+
+    console.log();
+
+    // limpiamos animación
+    this.scene.time.delayedCall(1000, () => {
       this.hasBeenHit = false;
       this.hitAnims.stop();
       this.clearTint();

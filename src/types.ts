@@ -18,7 +18,7 @@ export type SharedConfig = {
 };
 
 export type EnemyTypes = {
-  [key: string]: typeof Birdman;
+  [key: string]: typeof Birdman | typeof Snaky;
 };
 
 export type impactPosition = {

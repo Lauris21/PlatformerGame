@@ -148,6 +148,10 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  onWeaponHitPlayer() {
+    this.player.takesProjectilesHit(this.enemies.getProjectiles());
+  }
+
   createEnemyColliders() {
     this.enemies.addCollider(this.platformColliders, null);
 
@@ -174,6 +178,9 @@ class PlayScene extends Phaser.Scene {
 
   createPlayerColliders() {
     this.player.addCollider(this.platformColliders, null);
+    this.player.addCollider(this.enemies.getProjectiles(), () =>
+      this.onWeaponHitPlayer()
+    );
   }
 
   createEndOfLevel() {

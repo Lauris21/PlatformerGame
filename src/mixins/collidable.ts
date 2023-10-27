@@ -5,7 +5,8 @@ export function addCollider(
   otherGameobject:
     | Phaser.Tilemaps.StaticTilemapLayer
     | Projectiles
-    | Phaser.Physics.Arcade.Sprite,
+    | Phaser.Physics.Arcade.Sprite
+    | Phaser.GameObjects.Group,
   callback: any
 ) {
   this.scene.physics.add.collider(this, otherGameobject, callback, null, this);
