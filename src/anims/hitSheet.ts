@@ -33,4 +33,18 @@ export default (anims: Phaser.Animations.AnimationManager): void => {
     frameRate: 5,
     repeat: -1,
   });
+
+  anims.create({
+    key: "diamond-shine",
+    frames: [
+      { key: "diamond-1", frame: 0 },
+      { key: "diamond-2", frame: 0 },
+      { key: "diamond-3", frame: 0 },
+      { key: "diamond-4", frame: 0 },
+      { key: "diamond-5", frame: 0 },
+      { key: "diamond-6", frame: 0 },
+    ],
+    frameRate: 5,
+    repeat: -1,
+  });
 };

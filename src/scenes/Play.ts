@@ -37,18 +37,16 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     this.createMaps();
+    initAnims(this.anims);
     this.createLayers();
     this.getPlayerZones();
     this.createCollectables();
     this.createPlayer();
-
     this.createEnemies();
     this.createPlayerColliders();
     this.createEnemyColliders();
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
-
-    initAnims(this.anims);
   }
 
   createMaps() {
@@ -89,6 +87,8 @@ class PlayScene extends Phaser.Scene {
       this.collectables.get(collectable.x, collectable.y, "diamond");
     });
     this.collectables.setDepth(-1);
+
+    this.collectables.playAnimation("diamond-shine");
   }
 
   createPlayer() {
