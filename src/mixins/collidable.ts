@@ -17,7 +17,8 @@ export function addOverlap(
   otherGameobject:
     | Phaser.Tilemaps.StaticTilemapLayer
     | Projectiles
-    | Phaser.Physics.Arcade.Sprite,
+    | Phaser.Physics.Arcade.Sprite
+    | Phaser.Physics.Arcade.StaticGroup,
   callback: any
 ) {
   this.scene.physics.add.overlap(this, otherGameobject, callback, null, this);

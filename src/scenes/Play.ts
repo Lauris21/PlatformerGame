@@ -88,7 +88,6 @@ class PlayScene extends Phaser.Scene {
     this.collectablesLayer.objects.forEach((collectable) => {
       this.collectables.get(collectable.x, collectable.y, "diamond");
     });
-
     this.collectables.setDepth(-1);
   }
 
@@ -173,10 +172,26 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
+  onCollect(collectable: Phaser.GameObjects.GameObject) {
+    console.log("collecting!", collectable);
+    if (collectable instanceof Phaser.Physics.Arcade.Sprite) {
+      collectable.disableBody(true, true);
+    }
+  }
+
   createPlayerColliders() {
     this.player.addCollider(this.platformColliders, null);
+
     this.player.addCollider(this.enemies.getProjectiles(), () =>
       this.onWeaponHitPlayer()
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.collectables,
+      (player, collectable) => {
+        this.onCollect(collectable);
+      }
     );
   }
 

@@ -1,6 +1,6 @@
 import PlayScene from "../scenes/Play";
 import initAnimation from "../anims/playerAnims";
-import { addCollider } from "../mixins/collidable";
+import { addCollider, addOverlap } from "../mixins/collidable";
 import { Birdman } from "./BirdMan";
 import HealthBar from "../components/HealthBar";
 import Projectiles from "../attacks/Projectiles";
@@ -17,6 +17,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       | Phaser.Physics.Arcade.Sprite
       | Phaser.GameObjects.Group,
     callback: any
+  ) => void;
+
+  addOverlap: (
+    otherGameobject:
+      | Phaser.Tilemaps.StaticTilemapLayer
+      | Projectiles
+      | Phaser.Physics.Arcade.Sprite
+      | Phaser.Physics.Arcade.StaticGroup,
+    callback: () => void
   ) => void;
 
   isPlayingAnims: (animsKey: string) => boolean;
@@ -52,7 +61,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     //Mixins
-    Object.assign(this, { addCollider });
+    Object.assign(this, { addCollider, addOverlap });
     Object.assign(this, anims);
 
     this.init();
