@@ -5,6 +5,7 @@ import { Birdman } from "../entities/BirdMan";
 import { Enemies } from "../groups/Enemies";
 import initAnims from "../anims/hitSheet";
 import { Snaky } from "../entities/Snaky";
+import { Collectable } from "../collectables/Collectable";
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[] = [];
@@ -82,11 +83,12 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCollectables() {
-    this.collectables = this.physics.add.staticGroup();
+    this.collectables = this.physics.add.staticGroup().setDepth(-1);
     this.collectablesLayer.objects.forEach((collectable) => {
-      this.collectables.get(collectable.x, collectable.y, "diamond");
+      this.collectables.add(
+        new Collectable(this, collectable.x, collectable.y, "diamond")
+      );
     });
-    this.collectables.setDepth(-1);
 
     this.collectables.playAnimation("diamond-shine");
   }
