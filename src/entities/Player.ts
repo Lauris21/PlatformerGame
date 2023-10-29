@@ -9,7 +9,6 @@ import MeleeWeapon from "../attacks/MeleeWeapon";
 import { getTimestamp } from "../utils.js/functions";
 import { Snaky } from "./Snaky";
 import Projectile from "../attacks/Projectile";
-import { Enemy } from "./Enemy";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject:
@@ -25,6 +24,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   scene: PlayScene;
 
   gravity: number;
+  onFloor: boolean;
   playerSpeed: number;
   jumpCount: number;
   consecutiveJump: number;
@@ -43,6 +43,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   meleeWeapon: MeleeWeapon;
   timeFromLastSwing: number;
+  isSliding: boolean;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -65,6 +66,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.consecutiveJump = 1;
     this.hasBeenHit = false;
     this.bounceVelovity = 250; // velocidad de rebote
+    this.isSliding = false; // Deslizamiento al agacharse
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
@@ -88,6 +90,61 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     initAnimation(this.scene.anims);
 
+    this.handleAttacks();
+    this.handleMovements();
+  }
+
+  initEvents() {
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+  }
+
+  update(time: number, delta: number): void {
+    if (this.hasBeenHit || this.isSliding) {
+      return;
+    }
+    const { left, right, space } = this.cursors;
+
+    this.onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
+
+    const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
+
+    if (left.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+      this.setVelocityX(-this.playerSpeed);
+      this.setFlipX(true);
+    } else if (right.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+      this.setVelocityX(this.playerSpeed);
+      this.setFlipX(false);
+    } else {
+      this.setVelocityX(0);
+    }
+
+    if (
+      isSpaceJustDown &&
+      (this.onFloor || this.jumpCount < this.consecutiveJump)
+    ) {
+      this.setVelocityY(-this.playerSpeed * 2);
+      this.jumpCount++;
+    }
+
+    if (this.onFloor) {
+      this.jumpCount = 0;
+    }
+
+    if (this.isPlayingAnims("throw") || this.isPlayingAnims("slide")) {
+      // salimos para que se muestre dicha animacion cuando ataco
+      return;
+    }
+
+    this.onFloor
+      ? this.body.velocity.x !== 0
+        ? this.play("run", true)
+        : this.play("idle", true)
+      : this.play("jump", true);
+  }
+
+  handleAttacks() {
     this.scene.input.keyboard.on("keydown-Q", () => {
       this.play("throw", true);
       this.projectiles.fireProjectile(this, "iceball");
@@ -106,68 +163,25 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  initEvents() {
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
-  }
-
-  update(time: number, delta: number): void {
-    if (this.hasBeenHit) {
-      return;
-    }
-    const { left, right, space, up, down } = this.cursors;
-
-    const onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
-
-    const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
-    const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
-
-    if (down.isDown && onFloor) {
+  handleMovements() {
+    this.scene.input.keyboard.on("keydown-DOWN", () => {
+      if (!this.onFloor) {
+        return;
+      }
       this.body.setSize(this.width, this.height / 2);
       this.setOffset(0, this.height / 2); // desplazamiento
       this.setVelocityX(0);
-    } else {
+      this.play("slide", true);
+      this.isSliding = true;
+    });
+
+    this.scene.input.keyboard.on("keyup-DOWN", () => {
+      console.log("hola");
+
       this.body.setSize(this.width, 38);
       this.setOffset(0, 0);
-    }
-
-    if (left.isDown) {
-      this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
-      this.setVelocityX(-this.playerSpeed);
-      this.setFlipX(true);
-    } else if (right.isDown) {
-      this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
-      this.setVelocityX(this.playerSpeed);
-      this.setFlipX(false);
-    } else {
-      this.setVelocityX(0);
-    }
-
-    if (
-      (isSpaceJustDown || isUpJustDown) &&
-      (onFloor || this.jumpCount < this.consecutiveJump)
-    ) {
-      this.setVelocityY(-this.playerSpeed * 2);
-      this.jumpCount++;
-    }
-
-    if (onFloor) {
-      this.jumpCount = 0;
-    }
-
-    if (down.isDown) {
-      this.play("slide", true);
-    }
-
-    if (this.isPlayingAnims("throw") || this.isPlayingAnims("slide")) {
-      // salimos para que se muestre dicha animacion cuando ataco
-      return;
-    }
-
-    onFloor
-      ? this.body.velocity.x !== 0
-        ? this.play("run", true)
-        : this.play("idle", true)
-      : this.play("jump", true);
+      this.isSliding = false;
+    });
   }
 
   playDamageTween() {
