@@ -18,6 +18,8 @@ class PlayScene extends Phaser.Scene {
   platforms: Phaser.Tilemaps.StaticTilemapLayer;
   playerZones: Phaser.Tilemaps.ObjectLayer;
   enemySpawns: Phaser.Tilemaps.ObjectLayer;
+  collectablesLayer: Phaser.Tilemaps.ObjectLayer;
+  collectables: Phaser.Physics.Arcade.StaticGroup;
 
   objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
   start: Phaser.Types.Tilemaps.TiledObject;
@@ -37,6 +39,7 @@ class PlayScene extends Phaser.Scene {
     this.createMaps();
     this.createLayers();
     this.getPlayerZones();
+    this.createCollectables();
     this.createPlayer();
 
     this.createEnemies();
@@ -46,25 +49,6 @@ class PlayScene extends Phaser.Scene {
     this.setupFollowupCameraOn(this.player);
 
     initAnims(this.anims);
-  }
-
-  finishDrawing(
-    pointer: Phaser.Input.Pointer,
-    layer: Phaser.Tilemaps.StaticTilemapLayer
-  ) {
-    this.line.x2 = pointer.worldX;
-    this.line.y2 = pointer.worldY;
-
-    this.graphics.clear();
-    this.graphics.strokeLineShape(this.line);
-
-    this.tileHits = layer.getTilesWithinShape(this.line);
-
-    if (this.tileHits.length > 0) {
-      this.tileHits.forEach((tile) => {
-        tile.index !== -1 && tile.setCollision(true);
-      });
-    }
   }
 
   createMaps() {
@@ -83,7 +67,9 @@ class PlayScene extends Phaser.Scene {
       tileset
     );
 
-    this.environment = this.map.createStaticLayer("environment", tileset);
+    this.environment = this.map
+      .createStaticLayer("environment", tileset)
+      .setDepth(-2);
 
     this.platforms = this.map.createStaticLayer("platforms", tileset);
 
@@ -91,8 +77,19 @@ class PlayScene extends Phaser.Scene {
 
     this.enemySpawns = this.map.getObjectLayer("enemy_spawns");
 
+    this.collectablesLayer = this.map.getObjectLayer("collectables");
+
     // Le estamos diciendo que no colisione con los 0 del mosaico
     this.platformColliders.setCollisionByProperty({ collides: true });
+  }
+
+  createCollectables() {
+    this.collectables = this.physics.add.staticGroup();
+    this.collectablesLayer.objects.forEach((collectable) => {
+      this.collectables.get(collectable.x, collectable.y, "diamond");
+    });
+
+    this.collectables.setDepth(-1);
   }
 
   createPlayer() {
