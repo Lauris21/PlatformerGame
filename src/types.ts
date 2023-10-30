@@ -25,3 +25,8 @@ export type impactPosition = {
   x: number;
   y: number;
 };
+
+export interface Property {
+  name: string;
+  value: any;
+}

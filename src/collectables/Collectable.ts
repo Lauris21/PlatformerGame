@@ -17,4 +17,11 @@ export class Collectable extends Phaser.Physics.Arcade.Sprite {
       yoyo: true,
     });
   }
+
+  // addFromLayer(layer : Phaser.Tilemaps.ObjectLayer) {
+  //   layer.objects.forEach((collectable) => {
+  //     Creamos instancias de Collectable
+  //     this.get(collectable.x, collectable.y, "diamond");
+  //   });
+  // }
 }

@@ -85,13 +85,7 @@ class PlayScene extends Phaser.Scene {
 
   createCollectables() {
     this.collectables = new Collectables(this).setDepth(-1);
-    this.collectablesLayer.objects.forEach((collectable) => {
-      // this.collectables.add(
-      //   new Collectable(this, collectable.x, collectable.y, "diamond")
-      // );
-      // Creamos instancias de Collectable
-      this.collectables.get(collectable.x, collectable.y, "diamond");
-    });
+    this.collectables.addFromLayer(this.collectablesLayer);
 
     this.collectables.playAnimation("diamond-shine");
   }

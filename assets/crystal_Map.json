@@ -932,7 +932,12 @@
                "name":"score",
                "type":"int",
                "value":1
-              }],
+              },
+              {
+                     "name":"type",
+                     "type":"string",
+                     "value":"diamond"
+                    }],
        "type":"objectgroup",
        "visible":true,
        "x":0,
