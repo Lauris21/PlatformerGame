@@ -7,6 +7,7 @@ import initAnims from "../anims/hitSheet";
 import { Snaky } from "../entities/Snaky";
 import { Collectable } from "../collectables/Collectable";
 import { Collectables } from "../groups/Collectables";
+import { Hud } from "../components/Hud";
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[] = [];
@@ -45,6 +46,7 @@ class PlayScene extends Phaser.Scene {
     this.createLayers();
     this.getPlayerZones();
     this.createCollectables();
+    this.createHud();
     this.createPlayer();
     this.createEnemies();
     this.createPlayerColliders();
@@ -90,6 +92,10 @@ class PlayScene extends Phaser.Scene {
     this.collectables.addFromLayer(this.collectablesLayer);
 
     this.collectables.playAnimation("diamond-shine");
+  }
+
+  createHud() {
+    new Hud(this, 0, 0);
   }
 
   createPlayer() {

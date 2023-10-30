@@ -15,6 +15,10 @@ export type SharedConfig = {
     x: number;
     y: number;
   };
+  rightBottomCorner: {
+    x: number;
+    y: number;
+  };
 };
 
 export type EnemyTypes = {

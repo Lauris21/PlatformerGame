@@ -22,6 +22,10 @@ const sharedConfig: SharedConfig = {
   },
   rightTopCorner: {
     x: width / zoomFactor + (width - width / zoomFactor) / 2,
+    y: (height - height / zoomFactor) / 2,
+  },
+  rightBottomCorner: {
+    x: width / zoomFactor + (width - width / zoomFactor) / 2,
     y: height / zoomFactor + (height - height / zoomFactor) / 2,
   },
 };
