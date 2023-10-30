@@ -19,9 +19,16 @@ export function addOverlap(
     | Projectiles
     | Phaser.Physics.Arcade.Sprite
     | Phaser.Physics.Arcade.StaticGroup,
-  callback: any
+  callback: any,
+  context: typeof otherGameobject
 ) {
-  this.scene.physics.add.overlap(this, otherGameobject, callback, null, this);
+  this.scene.physics.add.overlap(
+    this,
+    otherGameobject,
+    callback,
+    null,
+    context || this
+  );
   return this;
 }
 

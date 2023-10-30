@@ -22,6 +22,7 @@ class PlayScene extends Phaser.Scene {
   enemySpawns: Phaser.Tilemaps.ObjectLayer;
   collectablesLayer: Phaser.Tilemaps.ObjectLayer;
   collectables: Collectables;
+  score: number;
 
   objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
   start: Phaser.Types.Tilemaps.TiledObject;
@@ -38,6 +39,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    this.score = 0;
     this.createMaps();
     initAnims(this.anims);
     this.createLayers();
@@ -155,8 +157,10 @@ class PlayScene extends Phaser.Scene {
         this.onPlayerCollision(this.player, enemy)
       );
       enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
-      enemy.addOverlap(this.player.meleeWeapon, () =>
-        this.onMeleeWeaponHit(enemy)
+      enemy.addOverlap(
+        this.player.meleeWeapon,
+        () => this.onMeleeWeaponHit(enemy),
+        null
       );
     });
 
@@ -165,13 +169,20 @@ class PlayScene extends Phaser.Scene {
         this.onPlayerCollision(this.player, enemy)
       );
       enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
-      enemy.addOverlap(this.player.meleeWeapon, () =>
-        this.onMeleeWeaponHit(enemy)
+      enemy.addOverlap(
+        this.player.meleeWeapon,
+        () => this.onMeleeWeaponHit(enemy),
+        null
       );
     });
   }
 
   onCollect(collectable: Phaser.GameObjects.GameObject) {
+    if (collectable instanceof Collectable) {
+      this.score += collectable.score;
+      console.log(this.score);
+    }
+
     console.log("collecting!", collectable);
     if (collectable instanceof Phaser.Physics.Arcade.Sprite) {
       collectable.disableBody(true, true);

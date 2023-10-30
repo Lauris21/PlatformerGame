@@ -20,7 +20,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       | Projectiles
       | Phaser.Physics.Arcade.Sprite
       | Phaser.Physics.Arcade.StaticGroup,
-    callback: () => void
+    callback: () => void,
+    context: typeof otherGameobject
   ) => void;
 
   raycast: (
