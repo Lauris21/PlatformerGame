@@ -271,6 +271,12 @@
                  "height":14,
                  "id":9,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -879,13 +885,19 @@
                  "y":417.176853862861
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"score",
+                 "type":"int",
+                 "value":1
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":61,
+ "nextobjectid":63,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
@@ -912,7 +924,7 @@
          "tiles":[
                 {
                  "id":0,
-                 "image":"..\/..\/..\/..\/assets\/collectables\/diamond.png",
+                 "image":"collectables\/diamond.png",
                  "imageheight":14,
                  "imagewidth":16
                 }],
