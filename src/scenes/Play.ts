@@ -6,6 +6,7 @@ import { Enemies } from "../groups/Enemies";
 import initAnims from "../anims/hitSheet";
 import { Snaky } from "../entities/Snaky";
 import { Collectable } from "../collectables/Collectable";
+import { Collectables } from "../groups/Collectables";
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[] = [];
@@ -20,7 +21,7 @@ class PlayScene extends Phaser.Scene {
   playerZones: Phaser.Tilemaps.ObjectLayer;
   enemySpawns: Phaser.Tilemaps.ObjectLayer;
   collectablesLayer: Phaser.Tilemaps.ObjectLayer;
-  collectables: Phaser.Physics.Arcade.StaticGroup;
+  collectables: Collectables;
 
   objectsPlayerZones: Phaser.Types.Tilemaps.TiledObject[];
   start: Phaser.Types.Tilemaps.TiledObject;
@@ -83,11 +84,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCollectables() {
-    this.collectables = this.physics.add.staticGroup().setDepth(-1);
+    this.collectables = new Collectables(this).setDepth(-1);
     this.collectablesLayer.objects.forEach((collectable) => {
-      this.collectables.add(
-        new Collectable(this, collectable.x, collectable.y, "diamond")
-      );
+      // this.collectables.add(
+      //   new Collectable(this, collectable.x, collectable.y, "diamond")
+      // );
+      // Creamos instancias de Collectable
+      this.collectables.get(collectable.x, collectable.y, "diamond");
     });
 
     this.collectables.playAnimation("diamond-shine");
