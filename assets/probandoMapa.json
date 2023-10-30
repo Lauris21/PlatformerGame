@@ -289,6 +289,12 @@
                  "height":14,
                  "id":10,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":10
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -337,6 +343,12 @@
                  "height":14,
                  "id":14,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":10
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -361,6 +373,12 @@
                  "height":14,
                  "id":16,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -445,6 +463,12 @@
                  "height":14,
                  "id":23,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":10
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -505,6 +529,12 @@
                  "height":14,
                  "id":28,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":15
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -637,6 +667,12 @@
                  "height":14,
                  "id":40,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -697,6 +733,12 @@
                  "height":14,
                  "id":45,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -721,6 +763,12 @@
                  "height":14,
                  "id":47,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -781,6 +829,12 @@
                  "height":14,
                  "id":52,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -817,6 +871,12 @@
                  "height":14,
                  "id":55,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":5
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -841,6 +901,12 @@
                  "height":14,
                  "id":57,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"score",
+                         "type":"int",
+                         "value":10
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

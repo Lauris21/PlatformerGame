@@ -7,6 +7,8 @@ export class Collectable extends Phaser.Physics.Arcade.Sprite {
 
     this.score = 1;
 
+    this.setOrigin(0, 1);
+
     // Configuramos la animación subir y bajar
     scene.tweens.add({
       targets: this,
@@ -17,11 +19,4 @@ export class Collectable extends Phaser.Physics.Arcade.Sprite {
       yoyo: true,
     });
   }
-
-  // addFromLayer(layer : Phaser.Tilemaps.ObjectLayer) {
-  //   layer.objects.forEach((collectable) => {
-  //     Creamos instancias de Collectable
-  //     this.get(collectable.x, collectable.y, "diamond");
-  //   });
-  // }
 }

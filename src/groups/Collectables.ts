@@ -11,7 +11,7 @@ export class Collectables extends Phaser.Physics.Arcade.StaticGroup {
   // Obtenemos las propiedades de los diamantes en la capa y creamos un objeto con ellas
   mapProperties(propertiesList: Property[]) {
     if (!propertiesList || propertiesList.length === 0) {
-      return;
+      return {};
     }
 
     return propertiesList.reduce((map, obj) => {
@@ -22,10 +22,15 @@ export class Collectables extends Phaser.Physics.Arcade.StaticGroup {
 
   // Recorremos los objetos de la capa y creamos instancias de Collectable
   addFromLayer(layer: Phaser.Tilemaps.ObjectLayer) {
-    const properties = this.mapProperties(layer.properties as Property[]);
+    const { score: defaultScore, type } = this.mapProperties(
+      layer.properties as Property[]
+    );
 
     layer.objects.forEach((collectable) => {
-      this.get(collectable.x, collectable.y, properties.type);
+      // Los colocamos y añadimos propiedades
+      const collect = this.get(collectable.x, collectable.y, type);
+      const props = this.mapProperties(collectable.properties);
+      collect.score = props.score || defaultScore;
     });
   }
 }
