@@ -13,6 +13,7 @@ class PlayScene extends Phaser.Scene {
   birdmanEnemies: Birdman[] = [];
   snakyEnemies: Snaky[] = [];
   enemies: Enemies;
+  hud: Hud;
   config: SharedConfig;
 
   map: Phaser.Tilemaps.Tilemap;
@@ -95,7 +96,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   createHud() {
-    new Hud(this, 0, 0);
+    this.hud = new Hud(this, 0, 0);
   }
 
   createPlayer() {
@@ -186,7 +187,7 @@ class PlayScene extends Phaser.Scene {
   onCollect(collectable: Phaser.GameObjects.GameObject) {
     if (collectable instanceof Collectable) {
       this.score += collectable.score;
-      console.log(this.score);
+      this.hud.updateScoreBoard(this.score.toString());
     }
 
     console.log("collecting!", collectable);

@@ -7,7 +7,7 @@ const mapWidth: number = 1600;
 
 const width: number = document.body.offsetWidth; // ancho navegador
 const height: number = 600;
-const zoomFactor: number = 1.3;
+const zoomFactor: number = 1.2;
 
 const sharedConfig: SharedConfig = {
   // El desplazamiento de la camara será el ancho del juego menos el ancho del reproductor
@@ -15,7 +15,7 @@ const sharedConfig: SharedConfig = {
   width: width,
   height: height,
   zoomFactor: zoomFactor,
-  debug: true,
+  debug: false,
   leftTopCorner: {
     x: (width - width / zoomFactor) / 2,
     y: (height - height / zoomFactor) / 2,
