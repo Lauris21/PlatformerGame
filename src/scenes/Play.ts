@@ -8,6 +8,8 @@ import { Snaky } from "../entities/Snaky";
 import { Collectable } from "../collectables/Collectable";
 import { Collectables } from "../groups/Collectables";
 import { Hud } from "../components/Hud";
+import EventEmmiter from "../events/Emitter";
+
 class PlayScene extends Phaser.Scene {
   player: Player;
   birdmanEnemies: Birdman[] = [];
@@ -54,6 +56,7 @@ class PlayScene extends Phaser.Scene {
     this.createEnemies();
     this.createPlayerColliders();
     this.createEnemyColliders();
+    this.createGameEvents();
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
   }
@@ -219,6 +222,12 @@ class PlayScene extends Phaser.Scene {
         this.onCollect(collectable);
       }
     );
+  }
+
+  createGameEvents() {
+    EventEmmiter.on("player_loose", () => {
+      console.log("player has loose");
+    });
   }
 
   createEndOfLevel() {

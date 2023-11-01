@@ -9,6 +9,7 @@ import MeleeWeapon from "../attacks/MeleeWeapon";
 import { getTimestamp } from "../utils.js/functions";
 import { Snaky } from "./Snaky";
 import Projectile from "../attacks/Projectile";
+import EventEmitter from "../events/Emitter";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   addCollider: (
     otherGameobject:
@@ -84,7 +85,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.projectiles = new Projectiles(this.scene, "iceball-1");
     this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-default");
 
-    this.healt = 100;
+    this.healt = 30;
     this.hp = new HealthBar(
       this.scene,
       this.scene.config.leftTopCorner.x + 7,
@@ -229,11 +230,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
+    this.healt -= enemy.damage; // reducimos la salud
+    if (this.healt <= 0) {
+      EventEmitter.emit("player_loose");
+      return;
+    }
+
     this.hasBeenHit = true;
     this.bounceOff();
     this.hitAnims = this.playDamageTween(); // animación
 
-    this.healt -= enemy.damage; // reducimos la salud
     this.hp.decrease(this.healt);
 
     this.scene.time.delayedCall(1000, () => {
@@ -248,10 +254,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
+    let damage: number;
     this.hasBeenHit = true;
     this.bounceOff();
     this.hitAnims = this.playDamageTween(); // animación
-    let damage: number;
 
     projectiles.getChildren().forEach((projectile, index) => {
       if (projectile instanceof Projectile) {
@@ -263,8 +269,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.healt -= damage;
-    console.log(damage);
-
+    if (this.healt <= 0) {
+      EventEmitter.emit("player_loose");
+      return;
+    }
     this.hp.decrease(this.healt);
 
     // limpiamos animación
@@ -276,16 +284,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   takesTrapsHit(traps: Phaser.Tilemaps.StaticTilemapLayer) {
-    console.log(traps.layer.properties);
     if (this.hasBeenHit) {
       return;
     }
+    const trapProperties = traps.layer.properties[0] as { value: number };
+    this.healt -= trapProperties.value; // reducimos la salud
+    if (this.healt <= 0) {
+      EventEmitter.emit("player_loose");
+      return;
+    }
+
     this.hasBeenHit = true;
     this.bounceOffByTrap();
     this.hitAnims = this.playDamageTween(); // animación
 
-    const trapProperties = traps.layer.properties[0] as { value: number };
-    this.healt -= trapProperties.value; // reducimos la salud
     this.hp.decrease(this.healt);
 
     this.scene.time.delayedCall(1000, () => {
