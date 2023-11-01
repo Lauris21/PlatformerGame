@@ -214,6 +214,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }, 0);
   }
 
+  bounceOffByTrap() {
+    this.body.blocked.right // verificamos si colision es en el lado derecho o izquierdo
+      ? this.setVelocity(-this.bounceVelovity)
+      : this.setVelocity(this.bounceVelovity);
+
+    setTimeout(() => {
+      this.setVelocityY(-this.bounceVelovity);
+    }, 0);
+  }
+
   takesHit(enemy: Birdman | Snaky) {
     // nos golpean
     if (this.hasBeenHit) {
@@ -271,7 +281,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
     this.hasBeenHit = true;
-    this.bounceOff();
+    this.bounceOffByTrap();
     this.hitAnims = this.playDamageTween(); // animación
 
     const trapProperties = traps.layer.properties[0] as { value: number };

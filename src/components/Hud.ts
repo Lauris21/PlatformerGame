@@ -5,8 +5,6 @@ export class Hud extends Phaser.GameObjects.Container {
   lineHeight: number;
   containerWidth: number;
   scoreBoard: Phaser.GameObjects.Container;
-  scoreBoard2: Phaser.GameObjects.Text;
-  scoreBoard3: Phaser.GameObjects.Text;
 
   constructor(scene: PlayScene, x: number, y: number) {
     super(scene, x, y);
@@ -29,18 +27,18 @@ export class Hud extends Phaser.GameObjects.Container {
 
     this.createScore();
 
-    this.scoreBoard2 = this.scene.add.text(0, 0, "Hola", {
-      fontSize: `${this.fontSize}px`,
-      fill: "#fff",
-    });
+    // this.scoreBoard2 = this.scene.add.text(0, 0, "Hola", {
+    //   fontSize: `${this.fontSize}px`,
+    //   fill: "#fff",
+    // });
 
-    this.scoreBoard3 = this.scene.add.text(0, 0, "Hola", {
-      fontSize: `${this.fontSize}px`,
-      fill: "#fff",
-    });
+    // this.scoreBoard3 = this.scene.add.text(0, 0, "Hola", {
+    //   fontSize: `${this.fontSize}px`,
+    //   fill: "#fff",
+    // });
 
     this.lineHeight = 0;
-    this.add([this.scoreBoard, this.scoreBoard2, this.scoreBoard3]);
+    this.add(this.scoreBoard);
 
     this.list.forEach((item) => {
       (item as Phaser.GameObjects.Text).setPosition(
