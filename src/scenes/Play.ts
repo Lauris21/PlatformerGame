@@ -23,6 +23,8 @@ class PlayScene extends Phaser.Scene {
   playerZones: Phaser.Tilemaps.ObjectLayer;
   enemySpawns: Phaser.Tilemaps.ObjectLayer;
   collectablesLayer: Phaser.Tilemaps.ObjectLayer;
+  traps: Phaser.Tilemaps.StaticTilemapLayer;
+
   collectables: Collectables;
   score: number;
 
@@ -84,8 +86,11 @@ class PlayScene extends Phaser.Scene {
 
     this.collectablesLayer = this.map.getObjectLayer("collectables");
 
+    this.traps = this.map.createStaticLayer("traps", tileset);
+
     // Le estamos diciendo que no colisione con los 0 del mosaico
     this.platformColliders.setCollisionByProperty({ collides: true });
+    this.traps.setCollisionByExclusion([-1]);
   }
 
   createCollectables() {
@@ -202,6 +207,10 @@ class PlayScene extends Phaser.Scene {
     this.player.addCollider(this.enemies.getProjectiles(), () =>
       this.onWeaponHitPlayer()
     );
+
+    this.player.addCollider(this.traps, () => {
+      console.log("we got hit!");
+    });
 
     this.physics.add.overlap(
       this.player,
