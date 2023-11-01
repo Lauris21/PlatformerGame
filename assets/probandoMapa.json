@@ -1012,12 +1012,6 @@
          "id":10,
          "name":"traps",
          "opacity":1,
-         "properties":[
-                {
-                 "name":"damage",
-                 "type":"int",
-                 "value":10
-                }],
          "type":"tilelayer",
          "visible":true,
          "width":100,

@@ -209,7 +209,7 @@ class PlayScene extends Phaser.Scene {
     );
 
     this.player.addCollider(this.traps, () => {
-      console.log("we got hit!");
+      this.player.takesTrapsHit(this.traps);
     });
 
     this.physics.add.overlap(
