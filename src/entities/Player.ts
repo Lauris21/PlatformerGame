@@ -113,6 +113,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit || this.isSliding || !this.body) {
       return;
     }
+
+    if (this.getBounds().top > this.scene.config.height) {
+      EventEmitter.emit("player_loose");
+      return;
+    }
     const { left, right, space } = this.cursors;
 
     this.onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
