@@ -71,7 +71,7 @@ class PlayScene extends Phaser.Scene {
 
   createMaps() {
     this.map = this.make.tilemap({
-      key: "crystal_map_levelPrueba",
+      key: `level-${this.getCurrentLevel()}`,
     });
     this.map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
     this.map.addTilesetImage("bg_spikes_tileset", "bg-spikes-tileset");
@@ -268,6 +268,10 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
+  getCurrentLevel() {
+    return this.registry.get("level") || 1;
+  }
+
   createEndOfLevel() {
     const endOfLevel = this.physics.add
       .sprite(this.end.x, this.end.y, "end")
@@ -280,6 +284,8 @@ class PlayScene extends Phaser.Scene {
       endOfLevel,
       () => {
         endOfLevelOverlap.active = false;
+        this.registry.inc("level", 1);
+        this.scene.restart({ gameStatus: "level-completed" });
       }
     );
   }

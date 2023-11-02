@@ -6,9 +6,9 @@ class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.tilemapTiledJSON("crystal_map", "assets/crystal_map.json");
+    this.load.tilemapTiledJSON("level-1", "assets/crystal_map.json");
     this.load.tilemapTiledJSON(
-      "crystal_map_levelPrueba",
+      "level-2",
       "assets/crystal_world_map_level_2.json"
     );
 
@@ -82,9 +82,14 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 32,
       spacing: 16,
     });
+
+    this.load.once("complete", () => {
+      this.startGame();
+    });
   }
 
-  create() {
+  startGame() {
+    this.registry.set("level", 1);
     this.scene.start("PlayScene");
   }
 }
