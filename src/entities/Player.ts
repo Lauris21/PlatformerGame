@@ -292,6 +292,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
+    console.log(traps.layer);
+
     const trapProperties = traps.layer.properties[0] as { value: number };
     this.healt -= trapProperties.value; // reducimos la salud
     if (this.healt <= 0) {
