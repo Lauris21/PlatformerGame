@@ -29,6 +29,10 @@ export class Snaky extends Enemy {
   update(time: number, delta: number) {
     super.update(time, delta);
 
+    if (!this.active) {
+      return;
+    }
+
     // Asignamos la dirección
     if (this.body.velocity.x > 0) {
       this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;

@@ -44,7 +44,7 @@ class PlayScene extends Phaser.Scene {
     this.config = config;
   }
 
-  create() {
+  create({ gameStatus }: { gameStatus: string }) {
     this.score = 0;
     this.createMaps();
     initAnims(this.anims);
@@ -56,9 +56,14 @@ class PlayScene extends Phaser.Scene {
     this.createEnemies();
     this.createPlayerColliders();
     this.createEnemyColliders();
-    this.createGameEvents();
+
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
+
+    if (gameStatus === "player_loose") {
+      return;
+    }
+    this.createGameEvents();
   }
 
   createMaps() {
@@ -226,7 +231,7 @@ class PlayScene extends Phaser.Scene {
 
   createGameEvents() {
     EventEmmiter.on("player_loose", () => {
-      console.log("player has loose");
+      this.scene.restart({ gameStatus: "player_loose" });
     });
   }
 

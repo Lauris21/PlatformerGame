@@ -110,7 +110,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time: number, delta: number): void {
-    if (this.hasBeenHit || this.isSliding) {
+    if (this.hasBeenHit || this.isSliding || !this.body) {
       return;
     }
     const { left, right, space } = this.cursors;

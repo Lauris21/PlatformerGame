@@ -9,7 +9,7 @@ export function addCollider(
     | Phaser.GameObjects.Group,
   callback: any
 ) {
-  this.scene.physics.add.collider(this, otherGameobject, callback, null, this);
+  this.scene?.physics.add.collider(this, otherGameobject, callback, null, this);
   return this;
 }
 
@@ -22,7 +22,7 @@ export function addOverlap(
   callback: any,
   context: typeof otherGameobject
 ) {
-  this.scene.physics.add.overlap(
+  this.scene?.physics.add.overlap(
     this,
     otherGameobject,
     callback,
