@@ -1240,6 +1240,19 @@
                               "imagewidth":480
                              }],
                       "tilewidth":480
+                     }, 
+                     {
+                      "columns":2,
+                      "firstgid":4099,
+                      "image":"bg_spikes_tileset.png",
+                      "imageheight":32,
+                      "imagewidth":32,
+                      "margin":0,
+                      "name":"bg_spikes_tileset",
+                      "spacing":0,
+                      "tilecount":4,
+                      "tileheight":16,
+                      "tilewidth":16
                      }],
               "tilewidth":16
              }],

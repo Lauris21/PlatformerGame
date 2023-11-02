@@ -72,11 +72,17 @@ class PlayScene extends Phaser.Scene {
       key: "crystal_map",
     });
     this.map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
+    this.map.addTilesetImage("bg_spikes_tileset", "bg-spikes-tileset");
   }
 
   createLayers() {
     const tileset: Phaser.Tilemaps.Tileset =
       this.map.getTileset("main_lev_build_1");
+
+    const tilesetBg: Phaser.Tilemaps.Tileset =
+      this.map.getTileset("bg_spikes_tileset");
+
+    this.map.createStaticLayer("distance", tilesetBg).setDepth(-12);
 
     this.platformColliders = this.map.createStaticLayer(
       "platforms_colliders",
