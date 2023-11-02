@@ -116,6 +116,13 @@ class PlayScene extends Phaser.Scene {
       .setOrigin(0, 0.75)
       .setDepth(-10)
       .setScrollFactor(0, 1);
+
+    this.add
+      .tileSprite(0, 0, this.config.width, 180, "sky-play")
+      .setOrigin(0, 0)
+      .setDepth(-11)
+      .setScale(1.4)
+      .setScrollFactor(0, 1);
   }
 
   createCollectables() {
