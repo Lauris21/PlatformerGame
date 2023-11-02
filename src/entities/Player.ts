@@ -85,7 +85,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.projectiles = new Projectiles(this.scene, "iceball-1");
     this.meleeWeapon = new MeleeWeapon(this.scene, 0, 0, "sword-default");
 
-    this.healt = 30;
+    this.healt = 100;
     this.hp = new HealthBar(
       this.scene,
       this.scene.config.leftTopCorner.x + 7,

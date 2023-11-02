@@ -49,6 +49,7 @@ class PlayScene extends Phaser.Scene {
     this.createMaps();
     initAnims(this.anims);
     this.createLayers();
+    this.createBG();
     this.getPlayerZones();
     this.createCollectables();
     this.createHud();
@@ -99,6 +100,22 @@ class PlayScene extends Phaser.Scene {
     // Le estamos diciendo que no colisione con los 0 del mosaico
     this.platformColliders.setCollisionByProperty({ collides: true });
     this.traps.setCollisionByExclusion([-1]);
+  }
+
+  createBG() {
+    const bgObject: Phaser.Types.Tilemaps.TiledObject =
+      this.map.getObjectLayer("distance_bg").objects[0];
+    this.add
+      .tileSprite(
+        bgObject.x,
+        bgObject.y,
+        this.config.width,
+        bgObject.height,
+        "bg-spikes-dark"
+      )
+      .setOrigin(0, 0.75)
+      .setDepth(-10)
+      .setScrollFactor(0, 1);
   }
 
   createCollectables() {

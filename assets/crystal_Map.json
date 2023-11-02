@@ -1217,6 +1217,29 @@
                       "image":"collectables\/diamond.png",
                       "imageheight":14,
                       "imagewidth":16
+                     }, 
+                     {
+                      "columns":0,
+                      "firstgid":4098,
+                      "grid":
+                         {
+                          "height":1,
+                          "orientation":"orthogonal",
+                          "width":1
+                         },
+                      "margin":0,
+                      "name":"bg_spikes_dark",
+                      "spacing":0,
+                      "tilecount":1,
+                      "tileheight":270,
+                      "tiles":[
+                             {
+                              "id":0,
+                              "image":"bg_spikes_dark.png",
+                              "imageheight":270,
+                              "imagewidth":480
+                             }],
+                      "tilewidth":480
                      }],
               "tilewidth":16
              }],
