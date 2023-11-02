@@ -23,6 +23,8 @@ class PlayScene extends Phaser.Scene {
   environment: Phaser.Tilemaps.StaticTilemapLayer;
   platforms: Phaser.Tilemaps.StaticTilemapLayer;
   playerZones: Phaser.Tilemaps.ObjectLayer;
+  spikesImage: Phaser.GameObjects.TileSprite;
+  skyImage: Phaser.GameObjects.TileSprite;
   enemySpawns: Phaser.Tilemaps.ObjectLayer;
   collectablesLayer: Phaser.Tilemaps.ObjectLayer;
   traps: Phaser.Tilemaps.StaticTilemapLayer;
@@ -111,7 +113,8 @@ class PlayScene extends Phaser.Scene {
   createBG() {
     const bgObject: Phaser.Types.Tilemaps.TiledObject =
       this.map.getObjectLayer("distance_bg").objects[0];
-    this.add
+
+    this.spikesImage = this.add
       .tileSprite(
         bgObject.x,
         bgObject.y,
@@ -123,7 +126,7 @@ class PlayScene extends Phaser.Scene {
       .setDepth(-10)
       .setScrollFactor(0, 1);
 
-    this.add
+    this.skyImage = this.add
       .tileSprite(0, 0, this.config.width, 180, "sky-play")
       .setOrigin(0, 0)
       .setDepth(-11)
@@ -297,7 +300,11 @@ class PlayScene extends Phaser.Scene {
     );
     this.end = this.objectsPlayerZones.find((elem) => elem.name === "endZone");
   }
-  update(time: number, delta: number): void {}
+  update(time: number, delta: number): void {
+    // Parallax effect
+    this.spikesImage.tilePositionX = this.cameras.main.scrollX * 0.3;
+    this.skyImage.tilePositionX = this.cameras.main.scrollX * 0.1;
+  }
 }
 
 export default PlayScene;
