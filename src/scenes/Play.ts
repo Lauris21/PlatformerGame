@@ -71,7 +71,7 @@ class PlayScene extends Phaser.Scene {
 
   createMaps() {
     this.map = this.make.tilemap({
-      key: "crystal_map",
+      key: "crystal_map_levelPrueba",
     });
     this.map.addTilesetImage("main_lev_build_1", "main_lev_build_1");
     this.map.addTilesetImage("bg_spikes_tileset", "bg-spikes-tileset");
