@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import PlayScene from "./scenes/Play";
 import PreloadScene from "./scenes/Preload";
 import { SharedConfig } from "./types";
+import { MenuScene } from "./scenes/MenuScene";
 
 const mapWidth: number = 1600;
 
@@ -31,7 +32,7 @@ const sharedConfig: SharedConfig = {
 };
 
 //Tienen que ir en orden de ejecución
-const Scenes = [PreloadScene, PlayScene];
+const Scenes = [PreloadScene, MenuScene, PlayScene];
 
 // Creamos una nueva escena con la configuracion compartida
 const createScene = (Scene: any) => new Scene(sharedConfig);
