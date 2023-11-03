@@ -127,12 +127,22 @@ class PlayScene extends Phaser.Scene {
       .setDepth(-10)
       .setScrollFactor(0, 1);
 
-    this.skyImage = this.add
-      .tileSprite(0, 0, this.config.width, 180, "sky-play")
-      .setOrigin(0, 0)
-      .setDepth(-11)
-      .setScale(1.4)
-      .setScrollFactor(0, 1);
+    if (this.registry.get("level") === 2) {
+      this.skyImage = this.add
+        .tileSprite(0, 0, this.config.width, 180, "sky-play2")
+        .setOrigin(0, 0)
+        .setDepth(-11)
+        .setScale(1.4)
+        .setScrollFactor(0, 1)
+        .setTint(0x00aaff);
+    } else {
+      this.skyImage = this.add
+        .tileSprite(0, 0, this.config.width, 180, "sky-play")
+        .setOrigin(0, 0)
+        .setDepth(-11)
+        .setScale(1.4)
+        .setScrollFactor(0, 1);
+    }
   }
 
   createCollectables() {
