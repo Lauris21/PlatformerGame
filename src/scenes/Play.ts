@@ -41,6 +41,8 @@ class PlayScene extends Phaser.Scene {
 
   tileHits: Phaser.Tilemaps.Tile[]; // Si el raycasting golpea contra las plataformas del mosaico
 
+  collectSound: Phaser.Sound.BaseSound;
+
   constructor(config: SharedConfig) {
     super("PlayScene");
     this.config = config;
@@ -60,7 +62,7 @@ class PlayScene extends Phaser.Scene {
     this.createEnemies();
     this.createPlayerColliders();
     this.createEnemyColliders();
-
+    this.collectSound = this.sound.add("coin-pickup-music", { volume: 0.2 });
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
     this.createBackButton();
@@ -253,9 +255,9 @@ class PlayScene extends Phaser.Scene {
     if (collectable instanceof Collectable) {
       this.score += collectable.score;
       this.hud.updateScoreBoard(this.score.toString());
+      this.collectSound.play();
     }
 
-    console.log("collecting!", collectable);
     if (collectable instanceof Phaser.Physics.Arcade.Sprite) {
       collectable.disableBody(true, true);
     }
