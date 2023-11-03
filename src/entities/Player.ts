@@ -218,8 +218,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.scene.input.keyboard.on("keyup-DOWN", () => {
-      console.log("hola");
-
       this.body.setSize(this.width, 38);
       this.setOffset(0, 0);
       this.isSliding = false;
@@ -318,7 +316,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
-    console.log(traps.layer);
 
     const trapProperties = traps.layer.properties[0] as { value: number };
     this.healt -= trapProperties.value; // reducimos la salud

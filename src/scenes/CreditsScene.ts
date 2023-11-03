@@ -11,8 +11,6 @@ export class CreditsScene extends BaseScene {
   constructor(config: SharedConfig) {
     super("CreditsScene", { ...config, canGoBack: true });
 
-    console.log(config);
-
     this.menu = [
       { scene: "null", text: "Thank you for playing", textGo: null },
       { scene: "null", text: "With love 💜 Laura", textGo: null },

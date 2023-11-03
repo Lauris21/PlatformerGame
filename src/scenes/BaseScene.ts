@@ -49,7 +49,6 @@ export class BaseScene extends Phaser.Scene {
     }) => void
   ) {
     let lastMenuPositionY = 0;
-    console.log(menu);
 
     menu.forEach((menuItem) => {
       const menuPosition = [

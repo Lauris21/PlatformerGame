@@ -11,8 +11,6 @@ export class MenuScene extends BaseScene {
   constructor(config: SharedConfig) {
     super("MenuScene", config);
 
-    console.log(config);
-
     this.menu = [
       { scene: "PlayScene", text: "Play", textGo: null },
       { scene: "LevelsScene", text: "Levels", textGo: null },
