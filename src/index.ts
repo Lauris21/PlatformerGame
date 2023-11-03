@@ -13,7 +13,7 @@ const zoomFactor: number = 1.2;
 
 const sharedConfig: SharedConfig = {
   // El desplazamiento de la camara será el ancho del juego menos el ancho del reproductor
-  mapOffset: mapWidth > width ? mapWidth : 0,
+  mapOffset: mapWidth > width ? mapWidth - width : 0,
   width: width,
   height: height,
   zoomFactor: zoomFactor,
