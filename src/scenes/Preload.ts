@@ -91,6 +91,8 @@ class PreloadScene extends Phaser.Scene {
       spacing: 16,
     });
 
+    this.load.audio("theme", "assets/music/theme_music.wav");
+
     this.load.once("complete", () => {
       this.startGame();
     });

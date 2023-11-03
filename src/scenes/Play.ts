@@ -48,6 +48,7 @@ class PlayScene extends Phaser.Scene {
 
   create({ gameStatus }: { gameStatus: string }) {
     this.score = 0;
+    this.playBgMusic();
     this.createMaps();
     initAnims(this.anims);
     this.createLayers();
@@ -68,6 +69,13 @@ class PlayScene extends Phaser.Scene {
       return;
     }
     this.createGameEvents();
+  }
+
+  playBgMusic() {
+    if (this.sound.get("theme")) {
+      return;
+    }
+    this.sound.add("theme", { loop: true, volume: 0.05 }).play();
   }
 
   createMaps() {
