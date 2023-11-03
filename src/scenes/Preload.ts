@@ -24,6 +24,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("bg-spikes-tileset", "assets/bg_spikes_tileset.png");
 
     this.load.image("menu-bg", "assets/background01.png");
+    this.load.image("back", "assets/back.png");
 
     this.load.image("iceball-1", "assets/weapons/iceball_001.png");
     this.load.image("iceball-2", "assets/weapons/iceball_002.png");
@@ -96,6 +97,7 @@ class PreloadScene extends Phaser.Scene {
 
   startGame() {
     this.registry.set("level", 1);
+    this.registry.set("unlocked-levels", 3);
     this.scene.start("MenuScene");
   }
 }

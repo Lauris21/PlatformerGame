@@ -1,27 +1,31 @@
 import { SharedConfig } from "../types";
 import { BaseScene } from "./BaseScene";
 
-export class MenuScene extends BaseScene {
+export class LevelsScene extends BaseScene {
   menu: {
     scene: string;
     text: string;
     textGo: Phaser.GameObjects.Text;
+    level: number;
   }[];
 
   constructor(config: SharedConfig) {
-    super("MenuScene", config);
-
-    console.log(config);
-
-    this.menu = [
-      { scene: "PlayScene", text: "Play", textGo: null },
-      { scene: "LevelsScene", text: "Levels", textGo: null },
-      { scene: "null", text: "Exit", textGo: null },
-    ];
+    super("LevelsScene", { ...config, canGoBack: true });
   }
 
   create() {
     super.create();
+    this.menu = [];
+
+    const levels = this.registry.get("unlocked-levels");
+    for (let i = 1; i <= levels; i++) {
+      this.menu.push({
+        scene: "PlayScene",
+        text: `Level ${i}`,
+        textGo: null,
+        level: i,
+      });
+    }
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
 
@@ -29,6 +33,7 @@ export class MenuScene extends BaseScene {
     scene: string;
     text: string;
     textGo: Phaser.GameObjects.Text;
+    level: number;
   }) {
     const textGO = menuItem.textGo;
     textGO.setInteractive();
@@ -39,7 +44,11 @@ export class MenuScene extends BaseScene {
       textGO.setStyle({ fill: "#713E01" });
     });
     textGO.on("pointerup", () => {
-      menuItem.scene && this.scene.start(menuItem.scene);
+      if (menuItem.scene) {
+        this.registry.set("level", menuItem.level);
+        this.scene.start(menuItem.scene);
+      }
+
       if (menuItem.text === "Exit") {
         this.game.destroy(true);
       }
