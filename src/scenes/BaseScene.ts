@@ -23,16 +23,17 @@ export class BaseScene extends Phaser.Scene {
   create() {
     this.add.image(0, 0, "menu-bg").setOrigin(0).setScale(2.7);
 
-    // if (this.config.canGoBack) {
-    //     const backButton = this.add.image(this.config.width - 10, this.config.height -10, 'back')
-    //       .setOrigin(1)
-    //       .setScale(2)
-    //       .setInteractive()
+    if (this.config.canGoBack) {
+      const backButton = this.add
+        .image(this.config.width - 10, this.config.height - 10, "back")
+        .setOrigin(1)
+        .setScale(2)
+        .setInteractive();
 
-    //     backButton.on('pointerup', () => {
-    //       this.scene.start('MenuScene');
-    //     })
-    //   }
+      backButton.on("pointerup", () => {
+        this.scene.start("MenuScene");
+      });
+    }
   }
 
   createMenu(

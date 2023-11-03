@@ -29,6 +29,7 @@ const sharedConfig: SharedConfig = {
     x: width / zoomFactor + (width - width / zoomFactor) / 2,
     y: height / zoomFactor + (height - height / zoomFactor) / 2,
   },
+  canGoBack: false,
 };
 
 //Tienen que ir en orden de ejecución

@@ -19,6 +19,7 @@ export type SharedConfig = {
     x: number;
     y: number;
   };
+  canGoBack: boolean;
 };
 
 export type EnemyTypes = {
