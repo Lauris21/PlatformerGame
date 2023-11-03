@@ -62,6 +62,7 @@ class PlayScene extends Phaser.Scene {
 
     this.createEndOfLevel();
     this.setupFollowupCameraOn(this.player);
+    this.createBackButton();
 
     if (gameStatus === "player_loose") {
       return;
@@ -260,6 +261,23 @@ class PlayScene extends Phaser.Scene {
         this.onCollect(collectable);
       }
     );
+  }
+
+  createBackButton() {
+    const btn = this.add
+      .image(
+        this.config.rightBottomCorner.x,
+        this.config.rightBottomCorner.y,
+        "back"
+      )
+      .setOrigin(1)
+      .setScrollFactor(0)
+      .setScale(2)
+      .setInteractive();
+
+    btn.on("pointerup", () => {
+      this.scene.start("MenuScene");
+    });
   }
 
   createGameEvents() {
