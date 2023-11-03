@@ -11,6 +11,10 @@ class PreloadScene extends Phaser.Scene {
       "level-2",
       "assets/crystal_world_map_level_2.json"
     );
+    this.load.tilemapTiledJSON(
+      "level-3",
+      "assets/crystal_world_map_level_3.json"
+    );
 
     this.load.image("main_lev_build_1", "assets/main_lev_build_1.png");
     this.load.image("main_lev_build_2", "assets/main_lev_build_2.png");

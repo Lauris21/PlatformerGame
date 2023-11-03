@@ -255,8 +255,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1516.93564862104,
-                 "y":110.635342185904
+                 "x":1577.27304549335,
+                 "y":105.70984040041
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -871,11 +871,11 @@
          "name":"traps",
          "opacity":1,
          "properties":[
-              {
-               "name":"damage",
-               "type":"int",
-               "value":10
-              }],
+                {
+                 "name":"damage",
+                 "type":"int",
+                 "value":10
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":100,
