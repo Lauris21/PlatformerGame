@@ -56,6 +56,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   timeFromLastSwing: number;
   isSliding: boolean;
 
+  jumpSound: Phaser.Sound.BaseSound;
+  proyectileSound: Phaser.Sound.BaseSound;
+  stepSound: Phaser.Sound.BaseSound;
+  swipeSound: Phaser.Sound.BaseSound;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
 
@@ -80,6 +85,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.isSliding = false; // Deslizamiento al agacharse
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
+
+    this.jumpSound = this.scene.sound.add("jump-music", { volume: 0.2 });
+    this.proyectileSound = this.scene.sound.add("projectile-launch-music", {
+      volume: 0.2,
+    });
+    this.stepSound = this.scene.sound.add("step-music", { volume: 0.2 });
+    this.swipeSound = this.scene.sound.add("swipe-music", { volume: 0.2 });
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT; // Direccion determinada del player
     this.projectiles = new Projectiles(this.scene, "iceball-1");
@@ -140,6 +152,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       isSpaceJustDown &&
       (this.onFloor || this.jumpCount < this.consecutiveJump)
     ) {
+      this.jumpSound.play();
       this.setVelocityY(-this.playerSpeed * 2);
       this.jumpCount++;
     }
@@ -162,6 +175,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   handleAttacks() {
     this.scene.input.keyboard.on("keydown-Q", () => {
+      this.proyectileSound.play();
       this.play("throw", true);
       this.projectiles.fireProjectile(this, "iceball");
     });
@@ -173,6 +187,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       ) {
         return;
       }
+      this.swipeSound.play();
       this.play("throw", true);
       this.meleeWeapon.swing(this);
       this.timeFromLastSwing = getTimestamp();
