@@ -20,6 +20,7 @@ export type SharedConfig = {
     y: number;
   };
   canGoBack: boolean;
+  lastLevel: number;
 };
 
 export type EnemyTypes = {

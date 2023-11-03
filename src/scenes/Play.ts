@@ -302,6 +302,11 @@ class PlayScene extends Phaser.Scene {
       endOfLevel,
       () => {
         endOfLevelOverlap.active = false;
+
+        if (this.registry.get("level") === this.config.lastLevel) {
+          this.scene.start("CreditsScene");
+          return;
+        }
         this.registry.inc("level", 1);
         this.registry.inc("unlocked-levels", 1);
         this.scene.restart({ gameStatus: "level-completed" });

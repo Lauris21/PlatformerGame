@@ -4,6 +4,7 @@ import PreloadScene from "./scenes/Preload";
 import { SharedConfig } from "./types";
 import { MenuScene } from "./scenes/MenuScene";
 import { LevelsScene } from "./scenes/LevelsScene";
+import { CreditsScene } from "./scenes/CreditsScene";
 
 const mapWidth: number = 1600;
 
@@ -31,10 +32,11 @@ const sharedConfig: SharedConfig = {
     y: height / zoomFactor + (height - height / zoomFactor) / 2,
   },
   canGoBack: false,
+  lastLevel: 3,
 };
 
 //Tienen que ir en orden de ejecución
-const Scenes = [PreloadScene, MenuScene, LevelsScene, PlayScene];
+const Scenes = [PreloadScene, MenuScene, LevelsScene, PlayScene, CreditsScene];
 
 // Creamos una nueva escena con la configuracion compartida
 const createScene = (Scene: any) => new Scene(sharedConfig);
