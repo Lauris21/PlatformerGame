@@ -14,7 +14,7 @@ export class CreditsScene extends BaseScene {
     console.log(config);
 
     this.menu = [
-      { scene: "null", text: "Thank you fot playing", textGo: null },
+      { scene: "null", text: "Thank you for playing", textGo: null },
       { scene: "null", text: "With love 💜 Laura", textGo: null },
     ];
   }
