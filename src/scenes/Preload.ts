@@ -8,7 +8,7 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.tilemapTiledJSON(
       "level-1",
-      "assets/crystal_world_map_level_2.json"
+      "assets/crystal_world_map_level_1.json"
     );
     this.load.tilemapTiledJSON(
       "level-2",
