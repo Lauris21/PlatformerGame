@@ -194,10 +194,10 @@ class PlayScene extends Phaser.Scene {
 
   onWeaponHit(entity: Phaser.GameObjects.GameObject) {
     let enemy;
-    if (entity.constructor.name == "Birdman") {
+    if (entity instanceof Birdman) {
       enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
     }
-    if (entity.constructor.name == "Snaky") {
+    if (entity instanceof Snaky) {
       enemy = this.snakyEnemies.find((e) => e.body === entity.body);
     }
 
