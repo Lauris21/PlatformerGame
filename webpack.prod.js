@@ -6,7 +6,7 @@ const path = require("path")
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: false,
+  devtool: "source-map",
   performance: {
     maxEntrypointSize: 90000,
     maxAssetSize: 900000
