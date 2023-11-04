@@ -162,9 +162,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   takesHit(source: Projectiles | MeleeWeapon) {
     if ("projectile" in source) {
+      console.log("hit on projectile");
+
       source.projectile.deliversHit(this);
     } else {
       source.deliversHit(this);
+      console.log("hit on projectile");
     }
 
     this.health -= source.damage;
