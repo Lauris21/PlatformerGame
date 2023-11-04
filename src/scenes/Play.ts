@@ -227,13 +227,17 @@ class PlayScene extends Phaser.Scene {
     this.enemies.addCollider(this.platformColliders, null);
 
     this.birdmanEnemies.forEach((enemy) => {
+      console.log(enemy);
       enemy.addCollider(this.player, () =>
         this.onPlayerCollision(this.player, enemy)
       );
       enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
       enemy.addOverlap(
         this.player.meleeWeapon,
-        () => this.onMeleeWeaponHit(enemy),
+        () => {
+          this.onMeleeWeaponHit(enemy);
+          console.log("hit!");
+        },
         null
       );
     });
