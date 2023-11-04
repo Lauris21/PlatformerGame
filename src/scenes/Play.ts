@@ -208,6 +208,8 @@ class PlayScene extends Phaser.Scene {
 
   onMeleeWeaponHit(entity: Phaser.GameObjects.GameObject) {
     let enemy;
+    console.log("hit!", entity);
+
     if (entity.constructor.name == "Birdman") {
       enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
     }
@@ -234,10 +236,7 @@ class PlayScene extends Phaser.Scene {
       enemy.addCollider(this.player.projectiles, () => this.onWeaponHit(enemy));
       enemy.addOverlap(
         this.player.meleeWeapon,
-        () => {
-          this.onMeleeWeaponHit(enemy);
-          console.log("hit!");
-        },
+        () => this.onMeleeWeaponHit(enemy),
         null
       );
     });
