@@ -208,12 +208,11 @@ class PlayScene extends Phaser.Scene {
 
   onMeleeWeaponHit(entity: Phaser.GameObjects.GameObject) {
     let enemy;
-    console.log("hit!", entity.constructor);
 
-    if (entity.constructor.name == "Birdman") {
+    if (entity instanceof Birdman) {
       enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
     }
-    if (entity.constructor.name == "Snaky") {
+    if (entity instanceof Snaky) {
       enemy = this.snakyEnemies.find((e) => e.body === entity.body);
     }
     if (enemy) {
@@ -229,7 +228,6 @@ class PlayScene extends Phaser.Scene {
     this.enemies.addCollider(this.platformColliders, null);
 
     this.birdmanEnemies.forEach((enemy) => {
-      console.log(enemy);
       enemy.addCollider(this.player, () =>
         this.onPlayerCollision(this.player, enemy)
       );
