@@ -208,7 +208,7 @@ class PlayScene extends Phaser.Scene {
 
   onMeleeWeaponHit(entity: Phaser.GameObjects.GameObject) {
     let enemy;
-    console.log("hit!", entity);
+    console.log("hit!", entity.constructor);
 
     if (entity.constructor.name == "Birdman") {
       enemy = this.birdmanEnemies.find((e) => e.body === entity.body);
