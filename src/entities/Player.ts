@@ -185,13 +185,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleAttacks() {
-    this.scene.input.keyboard.on("keydown-Q", () => {
+    this.scene.input.keyboard.on("keydown-A", () => {
       this.proyectileSound.play();
       this.play("throw", true);
       this.projectiles.fireProjectile(this, "iceball");
     });
 
-    this.scene.input.keyboard.on("keydown-E", () => {
+    this.scene.input.keyboard.on("keydown-D", () => {
       if (
         this.timeFromLastSwing &&
         this.timeFromLastSwing + this.meleeWeapon.attackSpeed > getTimestamp()
